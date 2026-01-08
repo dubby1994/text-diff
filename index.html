@@ -12,7 +12,16 @@
     <script src="/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<h1>Online Text Diff Tool</h1>
+
+<div class="container py-2">
+    <div class="text-center">
+        <h1 class="display-7 fw-bold">
+            <i class="bi bi-file-diff me-2"></i>
+            Online Text Diff Tool
+        </h1>
+    </div>
+</div>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-4">
@@ -21,7 +30,7 @@
                     <div class="mb-3">
                         <label for="baseText" class="form-label fw-bold">Original</label>
                         <textarea class="form-control" id="baseText"
-                                  onchange="diffUsingJS()" style="height: 95vh;"></textarea>
+                                  onchange="diffUsingJS()" style="height: 90vh;"></textarea>
                     </div>
                 </div>
             </div>
@@ -32,7 +41,7 @@
                 <div class="row align-items-center">
                     <div class="mb-3">
                         <label for="outputdiv" class="form-label fw-bold">Changes</label>
-                        <div id="outputdiv" style="height: 95vh; overflow: auto; white-space: pre-wrap;"></div>
+                        <div id="outputdiv" style="height: 90vh; overflow: auto; white-space: pre-wrap;"></div>
                     </div>
                 </div>
             </div>
@@ -44,7 +53,7 @@
                     <div class="mb-3">
                         <label for="newText" class="form-label fw-bold">Modified</label>
                         <textarea class="form-control" id="newText"
-                                  onchange="diffUsingJS()" style="height: 95vh;"></textarea>
+                                  onchange="diffUsingJS()" style="height: 90vh;"></textarea>
                     </div>
                 </div>
             </div>
