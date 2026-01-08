@@ -15,7 +15,7 @@
 
 <div class="container py-2">
     <div class="text-center">
-        <h1 class="display-7 fw-bold">
+        <h1 class="fw-bold" style="font-size: 1.2rem;">
             <i class="bi bi-file-diff me-2"></i>
             Online Text Diff Tool
         </h1>
@@ -28,7 +28,7 @@
             <div class="container mt-2">
                 <div class="row align-items-center">
                     <div class="mb-3">
-                        <label for="baseText" class="form-label fw-bold">Original</label>
+                        <label for="baseText" class="form-label">Original</label>
                         <textarea class="form-control" id="baseText"
                                   oninput="diffUsingJS()" style="height: 90vh;"></textarea>
                     </div>
@@ -40,7 +40,7 @@
             <div class="container mt-2">
                 <div class="row align-items-center">
                     <div class="mb-3">
-                        <label for="outputdiv" class="form-label fw-bold">Changes</label>
+                        <label for="outputdiv" class="form-label">Changes</label>
                         <div id="outputdiv" style="height: 90vh; overflow: auto; white-space: pre-wrap;"></div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
             <div class="container mt-2">
                 <div class="row align-items-center">
                     <div class="mb-3">
-                        <label for="newText" class="form-label fw-bold">Modified</label>
+                        <label for="newText" class="form-label">Modified</label>
                         <textarea class="form-control" id="newText"
                                   oninput="diffUsingJS()" style="height: 90vh;"></textarea>
                     </div>
