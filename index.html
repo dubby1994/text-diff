@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv='content-language' content='zh-cn'>
+    <title>文本比对 | CommonTool Online</title>
+    <meta name="description" content="使用CommonTool Online的二维码工具，在线比对文本的差异。"/>
+    <meta name="keywords" content="文本比对, 文本比较, 文本差异">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/logo.png" type="image/png">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <div class="container mt-2">
+                <div class="row align-items-center">
+                    <div class="mb-3">
+                        <label for="baseText" class="form-label fw-bold">原文本</label>
+                        <textarea class="form-control" id="baseText"
+                                  onchange="diffUsingJS()" style="height: 95vh;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="container mt-2">
+                <div class="row align-items-center">
+                    <div class="mb-3">
+                        <label for="outputdiv" class="form-label fw-bold">比对结果</label>
+                        <div id="outputdiv" style="height: 95vh; overflow: auto; white-space: pre-wrap;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="container mt-2">
+                <div class="row align-items-center">
+                    <div class="mb-3">
+                        <label for="newText" class="form-label fw-bold">目标文本</label>
+                        <textarea class="form-control" id="newText"
+                                  onchange="diffUsingJS()" style="height: 95vh;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/lib/diff_match_patch.js"></script>
+<script src="/js/textdiff.js"></script>
+
+</body>
+</html>
