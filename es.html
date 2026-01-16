@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="es">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO -->
-    <title>在线文本对比工具 – 快速比较文本差异</title>
-    <meta name="description" content="免费在线文本对比工具，快速比较两段文本并高亮显示差异。适用于文档、代码和内容对比。" />
-    <meta name="keywords" content="文本对比, 在线文本对比, diff工具, 文本差异对比" />
+    <title>Herramienta de Comparación de Texto en Línea – Compara Diferencias al Instante</title>
+    <meta name="description" content="Herramienta gratuita de comparación de texto en línea. Compara dos textos y resalta las diferencias al instante. Ideal para documentos, código y comparación de contenido." />
+    <meta name="keywords" content="comparar texto, comparación de texto en línea, herramienta diff, diferencias de texto" />
 
     <!-- Open Graph（分享用） -->
-    <meta property="og:title" content="在线文本对比工具" />
-    <meta property="og:description" content="快速比较两段文本，并即时高亮显示差异内容。" />
+    <meta property="og:title" content="Herramienta de Comparación de Texto en Línea" />
+    <meta property="og:description" content="Compara dos textos y resalta las diferencias al instante." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://textcompare.top/" />
 
@@ -136,70 +136,60 @@
 <body>
 
 <header>
-    <h1>在线文本对比工具</h1>
+    <h1>Herramienta de Comparación de Texto en Línea</h1>
     <p>
-        在线比较两段文本，并即时高亮显示它们的差异。
-        非常适合用于文档修改、代码审查、内容编辑和版本对比。
+        Compara dos textos en línea y resalta instantáneamente las diferencias.
+        Ideal para revisiones de documentos, código, edición de contenido y comparación de versiones.
     </p>
 </header>
 
 <main>
 
-    <!-- 工具区 -->
+    <!-- Zona de herramientas -->
     <div class="editor">
-        <textarea id="baseText" placeholder="在此粘贴原始文本..." oninput="diffUsingJS()"></textarea>
-        <textarea id="newText" placeholder="在此粘贴修改后的文本..." oninput="diffUsingJS()"></textarea>
+        <textarea id="baseText" placeholder="Pega aquí el texto original..." oninput="diffUsingJS()"></textarea>
+        <textarea id="newText" placeholder="Pega aquí el texto modificado..." oninput="diffUsingJS()"></textarea>
     </div>
 
     <div id="outputdiv" class="result"></div>
 
-    <!-- SEO / 使用说明 -->
+    <!-- SEO / Instrucciones -->
     <section>
-        <h2>如何在线对比文本</h2>
+        <h2>Cómo comparar texto en línea</h2>
         <p>
-            使用本在线文本对比工具非常简单：
+            Usar nuestra herramienta de comparación de texto es muy sencillo:
         </p>
         <ol>
-            <li>将原始文本粘贴到左侧文本框。</li>
-            <li>将修改后的文本粘贴到右侧文本框。</li>
-            <li>立即查看高亮显示的文本差异。</li>
+            <li>Pega el texto original en el cuadro izquierdo.</li>
+            <li>Pega el texto modificado en el cuadro derecho.</li>
+            <li>Visualiza inmediatamente las diferencias resaltadas.</li>
         </ol>
     </section>
 
     <section>
-        <h2>常见使用场景</h2>
+        <h2>Casos de uso comunes</h2>
         <ul>
-            <li>对比文档的不同版本</li>
-            <li>发布前检查内容修改</li>
-            <li>查找代码片段之间的差异</li>
-            <li>检测内容重复或疑似抄袭</li>
+            <li>Comparar diferentes versiones de documentos</li>
+            <li>Revisar cambios de contenido antes de publicar</li>
+            <li>Encontrar diferencias entre fragmentos de código</li>
+            <li>Detectar contenido duplicado o posible plagio</li>
         </ul>
     </section>
 
     <section>
-        <h2>常见问题（FAQ）</h2>
-        <p><strong>这个文本对比工具是免费的吗？</strong><br/>是的，完全免费使用。</p>
-        <p><strong>我的文本会被保存吗？</strong><br/>不会，所有对比操作都在浏览器本地完成。</p>
+        <h2>Preguntas frecuentes (FAQ)</h2>
+        <p><strong>¿Esta herramienta de comparación de texto es gratuita?</strong><br/>Sí, es completamente gratuita.</p>
+        <p><strong>¿Mi texto se guarda?</strong><br/>No, todas las comparaciones se realizan localmente en tu navegador.</p>
     </section>
 
 </main>
 
 <footer>
-    © 2026 TextCompare.top · 免费在线文本对比工具
+    © 2026 TextCompare.top · Herramienta gratuita de comparación de texto en línea
 </footer>
 
 <script src="/js/lib/diff_match_patch.js"></script>
 <script src="/js/textdiff.js"></script>
 
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KBM3ZNXXDG"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-KBM3ZNXXDG');
-</script>
-
-</body>
-</html>
+<script

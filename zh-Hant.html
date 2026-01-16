@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO -->
-    <title>在线文本对比工具 – 快速比较文本差异</title>
-    <meta name="description" content="免费在线文本对比工具，快速比较两段文本并高亮显示差异。适用于文档、代码和内容对比。" />
-    <meta name="keywords" content="文本对比, 在线文本对比, diff工具, 文本差异对比" />
+    <title>線上文字比對工具 – 即時比較文字差異</title>
+    <meta name="description" content="免費線上文字比對工具，可快速比較兩段文字並即時高亮顯示差異。適用於文件、程式碼與內容比對。" />
+    <meta name="keywords" content="文字比對, 線上文字比對, diff工具, 文字差異比較" />
 
     <!-- Open Graph（分享用） -->
-    <meta property="og:title" content="在线文本对比工具" />
-    <meta property="og:description" content="快速比较两段文本，并即时高亮显示差异内容。" />
+    <meta property="og:title" content="線上文字比對工具" />
+    <meta property="og:description" content="快速比較兩段文字，並即時高亮顯示差異內容。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://textcompare.top/" />
 
@@ -136,56 +136,56 @@
 <body>
 
 <header>
-    <h1>在线文本对比工具</h1>
+    <h1>線上文字比對工具</h1>
     <p>
-        在线比较两段文本，并即时高亮显示它们的差异。
-        非常适合用于文档修改、代码审查、内容编辑和版本对比。
+        線上比較兩段文字，並即時高亮顯示它們之間的差異。
+        非常適合用於文件修改、程式碼審查、內容編輯與版本比對。
     </p>
 </header>
 
 <main>
 
-    <!-- 工具区 -->
+    <!-- 工具區 -->
     <div class="editor">
-        <textarea id="baseText" placeholder="在此粘贴原始文本..." oninput="diffUsingJS()"></textarea>
-        <textarea id="newText" placeholder="在此粘贴修改后的文本..." oninput="diffUsingJS()"></textarea>
+        <textarea id="baseText" placeholder="請在此貼上原始文字..." oninput="diffUsingJS()"></textarea>
+        <textarea id="newText" placeholder="請在此貼上修改後的文字..." oninput="diffUsingJS()"></textarea>
     </div>
 
     <div id="outputdiv" class="result"></div>
 
-    <!-- SEO / 使用说明 -->
+    <!-- SEO / 使用說明 -->
     <section>
-        <h2>如何在线对比文本</h2>
+        <h2>如何線上比對文字</h2>
         <p>
-            使用本在线文本对比工具非常简单：
+            使用本線上文字比對工具非常簡單：
         </p>
         <ol>
-            <li>将原始文本粘贴到左侧文本框。</li>
-            <li>将修改后的文本粘贴到右侧文本框。</li>
-            <li>立即查看高亮显示的文本差异。</li>
+            <li>將原始文字貼到左側文字框。</li>
+            <li>將修改後的文字貼到右側文字框。</li>
+            <li>立即查看高亮顯示的文字差異。</li>
         </ol>
     </section>
 
     <section>
-        <h2>常见使用场景</h2>
+        <h2>常見使用情境</h2>
         <ul>
-            <li>对比文档的不同版本</li>
-            <li>发布前检查内容修改</li>
-            <li>查找代码片段之间的差异</li>
-            <li>检测内容重复或疑似抄袭</li>
+            <li>比對文件的不同版本</li>
+            <li>發佈前檢查內容修改</li>
+            <li>找出程式碼片段之間的差異</li>
+            <li>偵測內容重複或疑似抄襲</li>
         </ul>
     </section>
 
     <section>
-        <h2>常见问题（FAQ）</h2>
-        <p><strong>这个文本对比工具是免费的吗？</strong><br/>是的，完全免费使用。</p>
-        <p><strong>我的文本会被保存吗？</strong><br/>不会，所有对比操作都在浏览器本地完成。</p>
+        <h2>常見問題（FAQ）</h2>
+        <p><strong>這個文字比對工具是免費的嗎？</strong><br/>是的，完全免費使用。</p>
+        <p><strong>我的文字會被儲存嗎？</strong><br/>不會，所有比對操作都在您的瀏覽器本地完成。</p>
     </section>
 
 </main>
 
 <footer>
-    © 2026 TextCompare.top · 免费在线文本对比工具
+    © 2026 TextCompare.top · 免費線上文字比對工具
 </footer>
 
 <script src="/js/lib/diff_match_patch.js"></script>

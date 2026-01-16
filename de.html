@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="de">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO -->
-    <title>在线文本对比工具 – 快速比较文本差异</title>
-    <meta name="description" content="免费在线文本对比工具，快速比较两段文本并高亮显示差异。适用于文档、代码和内容对比。" />
-    <meta name="keywords" content="文本对比, 在线文本对比, diff工具, 文本差异对比" />
+    <title>Online-Textvergleich – Textunterschiede sofort vergleichen</title>
+    <meta name="description" content="Kostenloses Online-Tool zum Textvergleich. Vergleichen Sie zwei Texte und heben Sie Unterschiede sofort hervor. Ideal für Dokumente, Code und Inhaltsvergleiche." />
+    <meta name="keywords" content="Textvergleich, Online Text vergleichen, Diff Tool, Text Unterschiede" />
 
     <!-- Open Graph（分享用） -->
-    <meta property="og:title" content="在线文本对比工具" />
-    <meta property="og:description" content="快速比较两段文本，并即时高亮显示差异内容。" />
+    <meta property="og:title" content="Online-Textvergleich" />
+    <meta property="og:description" content="Vergleichen Sie zwei Texte und heben Sie Unterschiede sofort hervor." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://textcompare.top/" />
 
@@ -136,56 +136,56 @@
 <body>
 
 <header>
-    <h1>在线文本对比工具</h1>
+    <h1>Online-Textvergleich</h1>
     <p>
-        在线比较两段文本，并即时高亮显示它们的差异。
-        非常适合用于文档修改、代码审查、内容编辑和版本对比。
+        Vergleichen Sie zwei Texte online und heben Sie Unterschiede sofort hervor.
+        Ideal für Dokumentbearbeitung, Code-Reviews, Inhaltsbearbeitung und Versionsvergleiche.
     </p>
 </header>
 
 <main>
 
-    <!-- 工具区 -->
+    <!-- Werkzeugbereich -->
     <div class="editor">
-        <textarea id="baseText" placeholder="在此粘贴原始文本..." oninput="diffUsingJS()"></textarea>
-        <textarea id="newText" placeholder="在此粘贴修改后的文本..." oninput="diffUsingJS()"></textarea>
+        <textarea id="baseText" placeholder="Originaltext hier einfügen..." oninput="diffUsingJS()"></textarea>
+        <textarea id="newText" placeholder="Geänderten Text hier einfügen..." oninput="diffUsingJS()"></textarea>
     </div>
 
     <div id="outputdiv" class="result"></div>
 
-    <!-- SEO / 使用说明 -->
+    <!-- SEO / Anleitung -->
     <section>
-        <h2>如何在线对比文本</h2>
+        <h2>So vergleichen Sie Texte online</h2>
         <p>
-            使用本在线文本对比工具非常简单：
+            Die Nutzung unseres Online-Textvergleichs ist ganz einfach:
         </p>
         <ol>
-            <li>将原始文本粘贴到左侧文本框。</li>
-            <li>将修改后的文本粘贴到右侧文本框。</li>
-            <li>立即查看高亮显示的文本差异。</li>
+            <li>Fügen Sie den Originaltext in das linke Textfeld ein.</li>
+            <li>Fügen Sie den geänderten Text in das rechte Textfeld ein.</li>
+            <li>Sehen Sie sich die hervorgehobenen Unterschiede sofort an.</li>
         </ol>
     </section>
 
     <section>
-        <h2>常见使用场景</h2>
+        <h2>Häufige Anwendungsfälle</h2>
         <ul>
-            <li>对比文档的不同版本</li>
-            <li>发布前检查内容修改</li>
-            <li>查找代码片段之间的差异</li>
-            <li>检测内容重复或疑似抄袭</li>
+            <li>Vergleich verschiedener Dokumentversionen</li>
+            <li>Überprüfung von Inhaltsänderungen vor der Veröffentlichung</li>
+            <li>Auffinden von Unterschieden zwischen Code-Snippets</li>
+            <li>Erkennung von doppelten Inhalten oder möglichem Plagiat</li>
         </ul>
     </section>
 
     <section>
-        <h2>常见问题（FAQ）</h2>
-        <p><strong>这个文本对比工具是免费的吗？</strong><br/>是的，完全免费使用。</p>
-        <p><strong>我的文本会被保存吗？</strong><br/>不会，所有对比操作都在浏览器本地完成。</p>
+        <h2>Häufig gestellte Fragen (FAQ)</h2>
+        <p><strong>Ist dieses Textvergleichs-Tool kostenlos?</strong><br/>Ja, die Nutzung ist vollständig kostenlos.</p>
+        <p><strong>Werden meine Texte gespeichert?</strong><br/>Nein, alle Vergleiche werden lokal in Ihrem Browser durchgeführt.</p>
     </section>
 
 </main>
 
 <footer>
-    © 2026 TextCompare.top · 免费在线文本对比工具
+    © 2026 TextCompare.top · Kostenloses Online-Textvergleichs-Tool
 </footer>
 
 <script src="/js/lib/diff_match_patch.js"></script>

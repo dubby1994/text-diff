@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="ru">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO -->
-    <title>在线文本对比工具 – 快速比较文本差异</title>
-    <meta name="description" content="免费在线文本对比工具，快速比较两段文本并高亮显示差异。适用于文档、代码和内容对比。" />
-    <meta name="keywords" content="文本对比, 在线文本对比, diff工具, 文本差异对比" />
+    <title>Онлайн-сравнение текста — мгновенное сравнение различий</title>
+    <meta name="description" content="Бесплатный онлайн-инструмент для сравнения текста. Сравнивайте два текста и мгновенно выделяйте различия. Подходит для документов, кода и сравнения контента." />
+    <meta name="keywords" content="сравнение текста, онлайн сравнение текста, diff инструмент, различия текста" />
 
     <!-- Open Graph（分享用） -->
-    <meta property="og:title" content="在线文本对比工具" />
-    <meta property="og:description" content="快速比较两段文本，并即时高亮显示差异内容。" />
+    <meta property="og:title" content="Онлайн-сравнение текста" />
+    <meta property="og:description" content="Сравнивайте два текста и мгновенно выделяйте различия." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://textcompare.top/" />
 
@@ -136,56 +136,56 @@
 <body>
 
 <header>
-    <h1>在线文本对比工具</h1>
+    <h1>Онлайн-сравнение текста</h1>
     <p>
-        在线比较两段文本，并即时高亮显示它们的差异。
-        非常适合用于文档修改、代码审查、内容编辑和版本对比。
+        Сравнивайте два текста онлайн и мгновенно выделяйте различия.
+        Идеально подходит для редактирования документов, проверки кода, работы с контентом и сравнения версий.
     </p>
 </header>
 
 <main>
 
-    <!-- 工具区 -->
+    <!-- Инструмент -->
     <div class="editor">
-        <textarea id="baseText" placeholder="在此粘贴原始文本..." oninput="diffUsingJS()"></textarea>
-        <textarea id="newText" placeholder="在此粘贴修改后的文本..." oninput="diffUsingJS()"></textarea>
+        <textarea id="baseText" placeholder="Вставьте исходный текст здесь..." oninput="diffUsingJS()"></textarea>
+        <textarea id="newText" placeholder="Вставьте изменённый текст здесь..." oninput="diffUsingJS()"></textarea>
     </div>
 
     <div id="outputdiv" class="result"></div>
 
-    <!-- SEO / 使用说明 -->
+    <!-- SEO / Инструкция -->
     <section>
-        <h2>如何在线对比文本</h2>
+        <h2>Как сравнить текст онлайн</h2>
         <p>
-            使用本在线文本对比工具非常简单：
+            Использовать наш онлайн-инструмент для сравнения текста очень просто:
         </p>
         <ol>
-            <li>将原始文本粘贴到左侧文本框。</li>
-            <li>将修改后的文本粘贴到右侧文本框。</li>
-            <li>立即查看高亮显示的文本差异。</li>
+            <li>Вставьте исходный текст в левое поле.</li>
+            <li>Вставьте изменённый текст в правое поле.</li>
+            <li>Мгновенно просмотрите выделенные различия.</li>
         </ol>
     </section>
 
     <section>
-        <h2>常见使用场景</h2>
+        <h2>Частые сценарии использования</h2>
         <ul>
-            <li>对比文档的不同版本</li>
-            <li>发布前检查内容修改</li>
-            <li>查找代码片段之间的差异</li>
-            <li>检测内容重复或疑似抄袭</li>
+            <li>Сравнение разных версий документов</li>
+            <li>Проверка изменений контента перед публикацией</li>
+            <li>Поиск различий между фрагментами кода</li>
+            <li>Обнаружение дублирующегося контента или возможного плагиата</li>
         </ul>
     </section>
 
     <section>
-        <h2>常见问题（FAQ）</h2>
-        <p><strong>这个文本对比工具是免费的吗？</strong><br/>是的，完全免费使用。</p>
-        <p><strong>我的文本会被保存吗？</strong><br/>不会，所有对比操作都在浏览器本地完成。</p>
+        <h2>Часто задаваемые вопросы (FAQ)</h2>
+        <p><strong>Этот инструмент для сравнения текста бесплатный?</strong><br/>Да, он полностью бесплатен.</p>
+        <p><strong>Сохраняется ли мой текст?</strong><br/>Нет, все сравнения выполняются локально в вашем браузере.</p>
     </section>
 
 </main>
 
 <footer>
-    © 2026 TextCompare.top · 免费在线文本对比工具
+    © 2026 TextCompare.top · Бесплатный онлайн-инструмент для сравнения текста
 </footer>
 
 <script src="/js/lib/diff_match_patch.js"></script>
