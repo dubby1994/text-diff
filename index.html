@@ -1,79 +1,206 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv='content-language' content='en'>
-    <title>Online Text Compare Tool | Compare Text and Highlight Differences</title>
-    <meta name="description" content="Free online text compare tool to compare original and target text. Automatically highlights added, removed, and changed content. Ideal for documents, code, and configuration comparison.">
-    <meta name="keywords" content="text compare, text diff, text comparison, diff tool, compare text online, text difference checker, document comparison, code diff">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO -->
+    <title>Online Text Compare Tool – Compare Text Differences Instantly</title>
+    <meta name="description" content="Free online text compare tool. Compare two texts and highlight differences instantly. Ideal for documents, code, and content comparison." />
+    <meta name="keywords" content="text compare, compare text online, diff tool, text diff" />
+
+    <!-- Open Graph（分享用） -->
+    <meta property="og:title" content="Online Text Compare Tool" />
+    <meta property="og:description" content="Compare two texts and highlight differences instantly." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://textcompare.top/" />
+
     <link rel="icon" href="/logo.png" type="image/png">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KBM3ZNXXDG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+            background: #f7f8fa;
+            color: #333;
+        }
 
-        gtag('config', 'G-KBM3ZNXXDG');
-    </script>
+        header {
+            padding: 32px 16px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        header p {
+            max-width: 720px;
+            margin: 0 auto;
+            color: #666;
+            font-size: 16px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .editor {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 240px;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            resize: vertical;
+        }
+
+        .actions {
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        button {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        .result {
+            background: #fff;
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            line-height: 1.6;
+        }
+
+        .added {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .removed {
+            background: #fee2e2;
+            color: #991b1b;
+            text-decoration: line-through;
+        }
+
+        section {
+            margin-top: 48px;
+        }
+
+        section h2 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        section p, section li {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 14px;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .editor {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="container py-2">
-    <div class="text-center">
-        <h1 class="fw-bold" style="font-size: 1.2rem;">
-            <i class="bi bi-file-diff me-2"></i>
-            Online Text Compare Tool
-        </h1>
-    </div>
-</div>
+<header>
+    <h1>Online Text Compare Tool</h1>
+    <p>
+        Compare two texts online and instantly highlight the differences.
+        Perfect for documents, code reviews, content editing, and version comparison.
+    </p>
+</header>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-4">
-            <div class="container mt-2">
-                <div class="row align-items-center">
-                    <div class="mb-3">
-                        <label for="baseText" class="form-label">Original</label>
-                        <textarea class="form-control" id="baseText"
-                                  oninput="diffUsingJS()" style="height: 80vh;"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
+<main>
 
-        <div class="col-4">
-            <div class="container mt-2">
-                <div class="row align-items-center">
-                    <div class="mb-3">
-                        <label for="outputdiv" class="form-label">Changes</label>
-                        <div id="outputdiv" style="height: 80vh; overflow: auto; white-space: pre-wrap;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="container mt-2">
-                <div class="row align-items-center">
-                    <div class="mb-3">
-                        <label for="newText" class="form-label">Modified</label>
-                        <textarea class="form-control" id="newText"
-                                  oninput="diffUsingJS()" style="height: 80vh;"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- 工具区 -->
+    <div class="editor">
+        <textarea id="baseText" placeholder="Paste original text here..." oninput="diffUsingJS()"></textarea>
+        <textarea id="newText" placeholder="Paste modified text here..." oninput="diffUsingJS()"></textarea>
     </div>
 
-</div>
+    <div id="outputdiv" class="result"></div>
+
+    <!-- SEO / 使用说明 -->
+    <section>
+        <h2>How to Compare Text Online</h2>
+        <p>
+            Using our text comparison tool is simple:
+        </p>
+        <ol>
+            <li>Paste the original text into the left box.</li>
+            <li>Paste the modified text into the right box.</li>
+            <li>Click the <strong>Compare Text</strong> button.</li>
+            <li>View highlighted differences instantly.</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Compare document revisions</li>
+            <li>Check content edits before publishing</li>
+            <li>Find differences between code snippets</li>
+            <li>Detect plagiarism or duplicated content</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>FAQ</h2>
+        <p><strong>Is this text compare tool free?</strong><br/>Yes, it is completely free to use.</p>
+        <p><strong>Is my text stored?</strong><br/>No, all comparisons are processed in your browser.</p>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 TextCompare.top · Free Online Text Comparison Tool
+</footer>
 
 <script src="/js/lib/diff_match_patch.js"></script>
 <script src="/js/textdiff.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KBM3ZNXXDG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KBM3ZNXXDG');
+</script>
 
 </body>
 </html>
