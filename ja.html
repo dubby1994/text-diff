@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ja">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO -->
-    <title>Онлайн-сравнение текста — мгновенное сравнение различий</title>
-    <meta name="description" content="Бесплатный онлайн-инструмент для сравнения текста. Сравнивайте два текста и мгновенно выделяйте различия. Подходит для документов, кода и сравнения контента." />
-    <meta name="keywords" content="сравнение текста, онлайн сравнение текста, diff инструмент, различия текста" />
+    <title>オンラインテキスト比較ツール – テキストの違いを即座に比較</title>
+    <meta name="description" content="無料のオンラインテキスト比較ツール。2つのテキストの違いを即座にハイライト表示します。ドキュメント、コード、コンテンツの比較に最適です。" />
+    <meta name="keywords" content="テキスト比較, オンライン比較, diffツール, テキスト差分" />
 
-    <!-- Open Graph（分享用） -->
-    <meta property="og:title" content="Онлайн-сравнение текста" />
-    <meta property="og:description" content="Сравнивайте два текста и мгновенно выделяйте различия." />
+    <!-- Open Graph -->
+    <meta property="og:title" content="オンラインテキスト比較ツール" />
+    <meta property="og:description" content="2つのテキストの違いを即座に比較・表示します。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://textcompare.top/" />
 
@@ -67,20 +67,6 @@
         .actions {
             text-align: center;
             margin: 16px 0;
-        }
-
-        button {
-            background: #2563eb;
-            color: #fff;
-            border: none;
-            padding: 10px 24px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1e40af;
         }
 
         .result {
@@ -151,62 +137,62 @@
 <body>
 
 <header>
-    <h1>Онлайн-сравнение текста</h1>
+    <h1>オンラインテキスト比較ツール</h1>
     <p>
-        Сравнивайте два текста онлайн и мгновенно выделяйте различия.
-        Идеально подходит для редактирования документов, проверки кода, работы с контентом и сравнения версий.
+        2つのテキストをオンラインで比較し、違いを即座にハイライト表示します。
+        ドキュメント、コードレビュー、コンテンツ編集、バージョン比較に最適です。
     </p>
 </header>
 
 <main>
 
-    <!-- Инструмент -->
+    <!-- ツールエリア -->
     <div class="editor">
-        <textarea id="baseText" placeholder="Вставьте исходный текст здесь..." oninput="diffUsingJS()"></textarea>
-        <textarea id="newText" placeholder="Вставьте изменённый текст здесь..." oninput="diffUsingJS()"></textarea>
+        <textarea id="baseText" placeholder="元のテキストを貼り付けてください…" oninput="diffUsingJS()"></textarea>
+        <textarea id="newText" placeholder="変更後のテキストを貼り付けてください…" oninput="diffUsingJS()"></textarea>
     </div>
 
     <div class="actions">
         <a href="/fullscreen.html" class="fullscreen-link" target="_blank">
-            ⛶ Полноэкранный режим Сравнить
+            ⛶ フルスクリーン比較
         </a>
     </div>
 
     <div id="outputdiv" class="result"></div>
 
-    <!-- SEO / Инструкция -->
+    <!-- 説明 -->
     <section>
-        <h2>Как сравнить текст онлайн</h2>
+        <h2>テキストをオンラインで比較する方法</h2>
         <p>
-            Использовать наш онлайн-инструмент для сравнения текста очень просто:
+            このテキスト比較ツールの使い方はとても簡単です。
         </p>
         <ol>
-            <li>Вставьте исходный текст в левое поле.</li>
-            <li>Вставьте изменённый текст в правое поле.</li>
-            <li>Мгновенно просмотрите выделенные различия.</li>
+            <li>左側のボックスに元のテキストを貼り付けます。</li>
+            <li>右側のボックスに変更後のテキストを貼り付けます。</li>
+            <li>違いが即座にハイライト表示されます。</li>
         </ol>
     </section>
 
     <section>
-        <h2>Частые сценарии использования</h2>
+        <h2>主な利用シーン</h2>
         <ul>
-            <li>Сравнение разных версий документов</li>
-            <li>Проверка изменений контента перед публикацией</li>
-            <li>Поиск различий между фрагментами кода</li>
-            <li>Обнаружение дублирующегося контента или возможного плагиата</li>
+            <li>ドキュメントの改訂比較</li>
+            <li>公開前のコンテンツ変更チェック</li>
+            <li>コードスニペットの差分確認</li>
+            <li>重複コンテンツや盗用の検出</li>
         </ul>
     </section>
 
     <section>
-        <h2>Часто задаваемые вопросы (FAQ)</h2>
-        <p><strong>Этот инструмент для сравнения текста бесплатный?</strong><br/>Да, он полностью бесплатен.</p>
-        <p><strong>Сохраняется ли мой текст?</strong><br/>Нет, все сравнения выполняются локально в вашем браузере.</p>
+        <h2>よくある質問</h2>
+        <p><strong>このテキスト比較ツールは無料ですか？</strong><br/>はい、完全に無料でご利用いただけます。</p>
+        <p><strong>入力したテキストは保存されますか？</strong><br/>いいえ。すべての比較処理はブラウザ内で行われます。</p>
     </section>
 
 </main>
 
 <footer>
-    © 2026 TextCompare.top · Бесплатный онлайн-инструмент для сравнения текста
+    © 2026 TextCompare.top · 無料オンラインテキスト比較ツール
 </footer>
 
 <script src="/js/lib/diff_match_patch.js"></script>
@@ -218,8 +204,15 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-KBM3ZNXXDG');
+</script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)
+    })(window, document, "clarity", "script", "v3c4qsa20s");
 </script>
 
 </body>

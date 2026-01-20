@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ko">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO -->
-    <title>Онлайн-сравнение текста — мгновенное сравнение различий</title>
-    <meta name="description" content="Бесплатный онлайн-инструмент для сравнения текста. Сравнивайте два текста и мгновенно выделяйте различия. Подходит для документов, кода и сравнения контента." />
-    <meta name="keywords" content="сравнение текста, онлайн сравнение текста, diff инструмент, различия текста" />
+    <title>온라인 텍스트 비교 도구 – 텍스트 차이를 즉시 비교</title>
+    <meta name="description" content="무료 온라인 텍스트 비교 도구입니다. 두 개의 텍스트 차이를 즉시 하이라이트하여 표시합니다. 문서, 코드, 콘텐츠 비교에 적합합니다." />
+    <meta name="keywords" content="텍스트 비교, 온라인 텍스트 비교, diff 도구, 텍스트 차이" />
 
-    <!-- Open Graph（分享用） -->
-    <meta property="og:title" content="Онлайн-сравнение текста" />
-    <meta property="og:description" content="Сравнивайте два текста и мгновенно выделяйте различия." />
+    <!-- Open Graph -->
+    <meta property="og:title" content="온라인 텍스트 비교 도구" />
+    <meta property="og:description" content="두 개의 텍스트 차이를 즉시 비교하고 하이라이트합니다." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://textcompare.top/" />
 
@@ -67,20 +67,6 @@
         .actions {
             text-align: center;
             margin: 16px 0;
-        }
-
-        button {
-            background: #2563eb;
-            color: #fff;
-            border: none;
-            padding: 10px 24px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1e40af;
         }
 
         .result {
@@ -151,62 +137,62 @@
 <body>
 
 <header>
-    <h1>Онлайн-сравнение текста</h1>
+    <h1>온라인 텍스트 비교 도구</h1>
     <p>
-        Сравнивайте два текста онлайн и мгновенно выделяйте различия.
-        Идеально подходит для редактирования документов, проверки кода, работы с контентом и сравнения версий.
+        두 개의 텍스트를 온라인에서 비교하고 차이를 즉시 하이라이트합니다.
+        문서, 코드 리뷰, 콘텐츠 편집 및 버전 비교에 적합합니다.
     </p>
 </header>
 
 <main>
 
-    <!-- Инструмент -->
+    <!-- 도구 영역 -->
     <div class="editor">
-        <textarea id="baseText" placeholder="Вставьте исходный текст здесь..." oninput="diffUsingJS()"></textarea>
-        <textarea id="newText" placeholder="Вставьте изменённый текст здесь..." oninput="diffUsingJS()"></textarea>
+        <textarea id="baseText" placeholder="원본 텍스트를 여기에 붙여 넣으세요..." oninput="diffUsingJS()"></textarea>
+        <textarea id="newText" placeholder="수정된 텍스트를 여기에 붙여 넣으세요..." oninput="diffUsingJS()"></textarea>
     </div>
 
     <div class="actions">
         <a href="/fullscreen.html" class="fullscreen-link" target="_blank">
-            ⛶ Полноэкранный режим Сравнить
+            ⛶ 전체 화면 비교
         </a>
     </div>
 
     <div id="outputdiv" class="result"></div>
 
-    <!-- SEO / Инструкция -->
+    <!-- 설명 -->
     <section>
-        <h2>Как сравнить текст онлайн</h2>
+        <h2>온라인에서 텍스트를 비교하는 방법</h2>
         <p>
-            Использовать наш онлайн-инструмент для сравнения текста очень просто:
+            이 텍스트 비교 도구는 사용 방법이 매우 간단합니다.
         </p>
         <ol>
-            <li>Вставьте исходный текст в левое поле.</li>
-            <li>Вставьте изменённый текст в правое поле.</li>
-            <li>Мгновенно просмотрите выделенные различия.</li>
+            <li>왼쪽 입력창에 원본 텍스트를 붙여 넣습니다.</li>
+            <li>오른쪽 입력창에 수정된 텍스트를 붙여 넣습니다.</li>
+            <li>차이가 즉시 하이라이트되어 표시됩니다.</li>
         </ol>
     </section>
 
     <section>
-        <h2>Частые сценарии использования</h2>
+        <h2>주요 사용 사례</h2>
         <ul>
-            <li>Сравнение разных версий документов</li>
-            <li>Проверка изменений контента перед публикацией</li>
-            <li>Поиск различий между фрагментами кода</li>
-            <li>Обнаружение дублирующегося контента или возможного плагиата</li>
+            <li>문서 버전 비교</li>
+            <li>게시 전 콘텐츠 수정 사항 확인</li>
+            <li>코드 스니펫 간 차이 비교</li>
+            <li>중복 콘텐츠 또는 표절 감지</li>
         </ul>
     </section>
 
     <section>
-        <h2>Часто задаваемые вопросы (FAQ)</h2>
-        <p><strong>Этот инструмент для сравнения текста бесплатный?</strong><br/>Да, он полностью бесплатен.</p>
-        <p><strong>Сохраняется ли мой текст?</strong><br/>Нет, все сравнения выполняются локально в вашем браузере.</p>
+        <h2>자주 묻는 질문</h2>
+        <p><strong>이 텍스트 비교 도구는 무료인가요?</strong><br/>네, 완전히 무료로 사용할 수 있습니다.</p>
+        <p><strong>입력한 텍스트가 저장되나요?</strong><br/>아니요. 모든 비교 작업은 브라우저 내에서만 처리됩니다.</p>
     </section>
 
 </main>
 
 <footer>
-    © 2026 TextCompare.top · Бесплатный онлайн-инструмент для сравнения текста
+    © 2026 TextCompare.top · 무료 온라인 텍스트 비교 도구
 </footer>
 
 <script src="/js/lib/diff_match_patch.js"></script>
@@ -218,8 +204,15 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-KBM3ZNXXDG');
+</script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)
+    })(window, document, "clarity", "script", "v3c4qsa20s");
 </script>
 
 </body>

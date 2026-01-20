@@ -130,6 +130,21 @@
                 flex-direction: column;
             }
         }
+
+        .fullscreen-link {
+            display: inline-block;
+            padding: 8px 14px;
+            font-size: 14px;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .fullscreen-link:hover {
+            background: #2563eb;
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -149,6 +164,12 @@
     <div class="editor">
         <textarea id="baseText" placeholder="Tempel teks asli di sini..." oninput="diffUsingJS()"></textarea>
         <textarea id="newText" placeholder="Tempel teks yang telah diubah di sini..." oninput="diffUsingJS()"></textarea>
+    </div>
+
+    <div class="actions">
+        <a href="/fullscreen.html" class="fullscreen-link" target="_blank">
+            ⛶ Perbandingan Layar Penuh
+        </a>
     </div>
 
     <div id="outputdiv" class="result"></div>
