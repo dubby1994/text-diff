@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <!-- SEO -->
     <title>Online Text Compare Tool – Compare Text Differences Instantly</title>
-    <meta name="description" content="Free online text compare tool. Compare two texts and highlight differences instantly. Ideal for documents, code, and content comparison." />
-    <meta name="keywords" content="text compare, compare text online, diff tool, text diff" />
+    <meta name="description"
+          content="Free online text compare tool. Compare two texts and highlight differences instantly. Ideal for documents, code, and content comparison."/>
+    <meta name="keywords" content="text compare, compare text online, diff tool, text diff"/>
 
     <!-- Open Graph（分享用） -->
-    <meta property="og:title" content="Online Text Compare Tool" />
-    <meta property="og:description" content="Compare two texts and highlight differences instantly." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://textcompare.top/" />
+    <meta property="og:title" content="Online Text Compare Tool"/>
+    <meta property="og:description" content="Compare two texts and highlight differences instantly."/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://textcompare.top/"/>
 
     <link rel="icon" href="/logo.png" type="image/png">
 
@@ -86,6 +87,26 @@
                 flex-direction: column;
             }
         }
+
+        .actions {
+            padding: 0 12px 12px;
+            text-align: right;
+        }
+
+        .actions button {
+            padding: 8px 14px;
+            font-size: 14px;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .actions button:hover {
+            background: #1d4ed8;
+        }
+
     </style>
 </head>
 
@@ -106,12 +127,17 @@
     ></textarea>
 </div>
 
+<div class="actions">
+    <button onclick="downloadResult()">Download Result as HTML</button>
+</div>
+
 <!-- 结果区 -->
 <div id="outputdiv" class="result"></div>
 
 <!-- diff 逻辑 -->
 <script src="/js/lib/diff_match_patch.js"></script>
 <script src="/js/textdiff.js"></script>
+<script src="/js/download.js"></script>
 
 </body>
 </html>
