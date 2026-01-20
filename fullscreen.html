@@ -139,7 +139,7 @@
 
 <div class="actions">
     <button onclick="downloadResult()">Download Result as HTML</button>
-    <button onclick="downloadImage()">Download Image</button>
+    <button onclick="downloadImage()">Download Result as Image</button>
 </div>
 
 <!-- 结果区 -->
@@ -153,7 +153,8 @@
 <script src="/js/lib/html2canvas.min.js"></script>
 <script src="/js/download_as_image.js"></script>
 
-<div id="exportWrapper" style="position: fixed; left: -9999px; top: 0; width: 1200px; background: #fff; padding: 24px; font-family: Consolas, Monaco, monospace;">
+<div id="exportWrapper"
+     style="position: fixed; left: -9999px; top: 0; width: 1200px; background: #fff; padding: 24px; font-family: Consolas, Monaco, monospace;">
 
     <!-- 标题 -->
     <h1 style="margin: 0 0 8px; font-size: 24px;">
@@ -171,13 +172,15 @@
         <!-- Original -->
         <div style="flex: 1;">
             <h3>Original</h3>
-            <pre id="exportBase" style="background:#f9fafb;border:1px solid #e5e7eb;padding:12px;white-space:pre-wrap;"></pre>
+            <pre id="exportBase"
+                 style="background:#f9fafb;border:1px solid #e5e7eb;padding:12px;white-space:pre-wrap;"></pre>
         </div>
 
         <!-- Modified -->
         <div style="flex: 1;">
             <h3>Modified</h3>
-            <pre id="exportNew" style="background:#f9fafb;border:1px solid #e5e7eb;padding:12px;white-space:pre-wrap;"></pre>
+            <pre id="exportNew"
+                 style="background:#f9fafb;border:1px solid #e5e7eb;padding:12px;white-space:pre-wrap;"></pre>
         </div>
     </div>
 
