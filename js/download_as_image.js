@@ -1,23 +1,3 @@
-// function downloadImage() {
-//     const target = document.getElementById("outputdiv");
-//
-//     if (!target.innerText.trim()) {
-//         alert("No comparison result to download.");
-//         return;
-//     }
-//
-//     html2canvas(target, {
-//         backgroundColor: "#ffffff",
-//         scale: 2   // 提高清晰度（很重要）
-//     }).then(canvas => {
-//         const link = document.createElement("a");
-//         link.download = "text-compare-result.png";
-//         link.href = canvas.toDataURL("image/png");
-//         link.click();
-//     });
-// }
-
-
 function downloadImage() {
     const baseText = document.getElementById("baseText").value;
     const newText = document.getElementById("newText").value;
