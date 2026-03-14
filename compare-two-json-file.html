@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>JSON Diff Tool – Compare JSON Files Online</title>
+    <meta name="description" content="Compare two JSON files online and highlight differences instantly. Free JSON diff tool for developers, APIs, and configuration files."/>
+    <meta name="keywords" content="json diff, compare json files online, json compare tool, json difference checker, json validator, api json diff"/>
+
+    <style>
+        body{
+            margin:0;
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
+            background:#f7f8fa;
+            color:#333;
+        }
+
+        header{
+            padding:32px;
+            text-align:center;
+        }
+
+        h1{
+            font-size:28px;
+            margin-bottom:12px;
+        }
+
+        header p{
+            max-width:720px;
+            margin:0 auto;
+            color:#666;
+            font-size:16px;
+        }
+
+        main{
+            max-width:1200px;
+            margin:auto;
+            padding:16px;
+        }
+
+        .editor{
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+            margin-bottom:16px;
+        }
+
+        .editor .json-card{
+            flex:1;
+            min-width:300px;
+            background:#fff;
+            padding:16px;
+            border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .json-card label{
+            font-weight:600;
+            display:block;
+            margin-bottom:8px;
+        }
+
+        .json-card input[type="file"]{
+            display:block;
+            margin-bottom:12px;
+        }
+
+        textarea{
+            width:100%;
+            min-height:260px;
+            padding:12px;
+            font-family:Consolas,monospace;
+            font-size:14px;
+            border-radius:8px;
+            border:1px solid #ccc;
+            resize:vertical;
+            background:#fefefe;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .actions{
+            text-align:center;
+            margin:20px 0;
+        }
+
+        button{
+            background:#2563eb;
+            color:#fff;
+            border:none;
+            padding:12px 24px;
+            border-radius:8px;
+            cursor:pointer;
+            margin:6px;
+            font-size:15px;
+            transition:0.2s;
+        }
+
+        button:hover{
+            background:#1e40af;
+        }
+
+        .result{
+            background:#fff;
+            padding:16px;
+            border-radius:12px;
+            border:1px solid #e5e7eb;
+            white-space:pre-wrap;
+            font-family:Consolas,monospace;
+            line-height:1.6;
+            box-shadow:0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .added{
+            background:#dcfce7;
+            color:#166534;
+        }
+
+        .removed{
+            background:#fee2e2;
+            color:#991b1b;
+            text-decoration:line-through;
+        }
+
+        .error{
+            color:#dc2626;
+            margin-bottom:10px;
+        }
+
+        section{
+            margin-top:48px;
+        }
+
+        section h2{
+            font-size:22px;
+            margin-bottom:12px;
+        }
+
+        section p, section li{
+            color:#555;
+            line-height:1.7;
+        }
+
+        ul{padding-left:20px;}
+
+        footer{
+            text-align:center;
+            padding:24px;
+            font-size:14px;
+            color:#999;
+        }
+
+        @media(max-width:768px){
+            .editor{flex-direction:column;}
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>JSON Diff Tool</h1>
+    <p>Compare two JSON files online and instantly highlight differences. Perfect for debugging APIs, configuration files, and JSON responses.</p>
+</header>
+
+<main>
+    <div class="editor">
+        <div class="json-card">
+            <label for="fileA">Upload JSON A:</label>
+            <input type="file" id="fileA" accept=".json" onchange="readFile('fileA','baseText')">
+            <textarea id="baseText" placeholder="JSON A content will appear here"></textarea>
+        </div>
+        <div class="json-card">
+            <label for="fileB">Upload JSON B:</label>
+            <input type="file" id="fileB" accept=".json" onchange="readFile('fileB','newText')">
+            <textarea id="newText" placeholder="JSON B content will appear here"></textarea>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button onclick="formatJSON('baseText')">Format Left JSON</button>
+        <button onclick="formatJSON('newText')">Format Right JSON</button>
+        <button onclick="compareJSON()">Compare JSON</button>
+        <button onclick="loadExample()">Load Example JSON</button>
+    </div>
+
+    <div id="errorBox" class="error"></div>
+    <div id="outputdiv" class="result"></div>
+
+    <section>
+        <h2>How to Compare JSON Files Online</h2>
+        <ol>
+            <li>Upload or paste the original JSON file into the left box.</li>
+            <li>Upload or paste the modified JSON file into the right box.</li>
+            <li>Click "Compare JSON" to highlight differences.</li>
+            <li>You can also format JSON with the "Format" buttons for readability.</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>Example JSON</h2>
+        <p>Click the button above to load a sample JSON for testing.</p>
+    </section>
+
+    <section>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Compare API responses during development</li>
+            <li>Debug JSON configuration files</li>
+            <li>Review changes in JSON data</li>
+            <li>Track version differences in JSON-based documents</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>FAQ</h2>
+        <p><strong>Is this JSON diff tool free?</strong><br>Yes, it is completely free to use.</p>
+        <p><strong>Are my JSON files stored?</strong><br>No, all comparisons run locally in your browser.</p>
+        <p><strong>Does it validate JSON?</strong><br>Yes, invalid JSON will show an error message.</p>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 TextCompare.top · Free JSON Comparison Tool
+</footer>
+
+<script src="/js/lib/diff_match_patch.js"></script>
+<script src="/js/textdiff.js"></script>
+
+<script>
+    function readFile(fileInputId, textareaId){
+        const fileInput=document.getElementById(fileInputId);
+        const textarea=document.getElementById(textareaId);
+        const errorBox=document.getElementById("errorBox");
+        if(fileInput.files.length===0) return;
+        const file=fileInput.files[0];
+        const reader=new FileReader();
+        reader.onload=function(e){
+            textarea.value=e.target.result;
+            errorBox.innerHTML="";
+        }
+        reader.onerror=function(){
+            errorBox.innerHTML="Failed to read file";
+        }
+        reader.readAsText(file);
+    }
+
+    function formatJSON(id){
+        const textarea=document.getElementById(id);
+        const errorBox=document.getElementById("errorBox");
+        try{
+            const obj=JSON.parse(textarea.value);
+            textarea.value=JSON.stringify(obj,null,2);
+            errorBox.innerHTML="";
+        }catch(e){
+            errorBox.innerHTML="Invalid JSON";
+        }
+    }
+
+    function compareJSON(){
+        const errorBox=document.getElementById("errorBox");
+        let left=document.getElementById("baseText").value;
+        let right=document.getElementById("newText").value;
+        try{
+            left=JSON.stringify(JSON.parse(left),null,2);
+            right=JSON.stringify(JSON.parse(right),null,2);
+            document.getElementById("baseText").value=left;
+            document.getElementById("newText").value=right;
+            errorBox.innerHTML="";
+            diffUsingJS();
+        }catch(e){
+            errorBox.innerHTML="Invalid JSON format";
+        }
+    }
+
+    function loadExample(){
+        const jsonA = `{
+  "name": "Alice",
+  "age": 25,
+  "city": "New York",
+  "skills": ["JavaScript","Python"]
+}`;
+        const jsonB = `{
+  "name": "Alice",
+  "age": 26,
+  "city": "New York",
+  "skills": ["JavaScript","Python","Go"]
+}`;
+        document.getElementById("baseText").value=jsonA;
+        document.getElementById("newText").value=jsonB;
+        compareJSON();
+    }
+</script>
+</body>
+</html>
