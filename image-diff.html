@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Diff Tool – Compare Images Online</title>
+    <meta name="description" content="Compare two images online and highlight differences. Supports pixel diff and blinking mode. Free image comparison tool.">
+    <meta name="keywords" content="image diff, compare images online, image difference, photo diff, image comparison tool">
+
+    <style>
+        body {
+            margin:0;
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
+            background:#f7f8fa;
+            color:#333;
+        }
+        header{
+            padding:32px;
+            text-align:center;
+        }
+        h1{
+            font-size:28px;
+            margin-bottom:12px;
+        }
+        header p{
+            max-width:720px;
+            margin:0 auto;
+            color:#666;
+            font-size:16px;
+        }
+        main{
+            max-width:1200px;
+            margin:auto;
+            padding:16px;
+        }
+
+        .upload-card{
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+            margin-bottom:16px;
+        }
+        .upload-card .upload-section{
+            flex:1;
+            min-width:220px;
+            background:#fff;
+            padding:16px;
+            border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .upload-section label{
+            font-weight:600;
+            display:block;
+            margin-bottom:8px;
+        }
+
+        .file-btn{
+            background:#2563eb;
+            color:#fff;
+            border:none;
+            padding:10px 20px;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:15px;
+            transition:0.2s;
+        }
+        .file-btn:hover{
+            background:#1e40af;
+        }
+
+        #canvasContainer{
+            display:flex;
+            flex-wrap:wrap;
+            gap:16px;
+            justify-content:center;
+            margin-top:16px;
+        }
+
+        canvas{
+            border:1px solid #ccc;
+            border-radius:8px;
+            max-width:100%;
+        }
+
+        .actions{
+            text-align:center;
+            margin:20px 0;
+        }
+        button.action-btn{
+            background:#2563eb;
+            color:#fff;
+            border:none;
+            padding:10px 24px;
+            border-radius:8px;
+            cursor:pointer;
+            margin:6px;
+            font-size:15px;
+            transition:0.2s;
+        }
+        button.action-btn:hover{
+            background:#1e40af;
+        }
+
+        footer{
+            text-align:center;
+            padding:24px;
+            font-size:14px;
+            color:#999;
+            margin-top:32px;
+        }
+        section{
+            margin-top:48px;
+        }
+        section h2{
+            font-size:22px;
+            margin-bottom:12px;
+        }
+        section p, section li{
+            color:#555;
+            line-height:1.7;
+        }
+        ul{padding-left:20px;}
+        @media(max-width:768px){
+            .upload-card{flex-direction:column;}
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Image Diff Tool</h1>
+    <p>Compare two images online and highlight differences. Supports pixel diff and blinking mode.</p>
+</header>
+
+<main>
+    <div class="upload-card">
+        <div class="upload-section">
+            <label>Image A:</label>
+            <button class="file-btn" onclick="document.getElementById('imgA').click()">Select Image A</button>
+            <input type="file" id="imgA" accept="image/*" style="display:none" onchange="readFile('imgA','canvasA','imgAName')">
+            <span id="imgAName" style="margin-left:8px;color:#555;">No file selected</span>
+        </div>
+        <div class="upload-section">
+            <label>Image B:</label>
+            <button class="file-btn" onclick="document.getElementById('imgB').click()">Select Image B</button>
+            <input type="file" id="imgB" accept="image/*" style="display:none" onchange="readFile('imgB','canvasB','imgBName')">
+            <span id="imgBName" style="margin-left:8px;color:#555;">No file selected</span>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="action-btn" onclick="generateDiff()">Generate Pixel Diff</button>
+        <button class="action-btn" onclick="startBlink()">Start Blinking</button>
+        <button class="action-btn" onclick="stopBlink()">Stop Blinking</button>
+    </div>
+
+    <div id="canvasContainer">
+        <canvas id="canvasA"></canvas>
+        <canvas id="canvasB"></canvas>
+        <canvas id="canvasDiff"></canvas>
+    </div>
+
+    <section>
+        <h2>How to Compare Images Online</h2>
+        <ol>
+            <li>Upload two images you want to compare.</li>
+            <li>Click "Generate Pixel Diff" to see highlighted differences.</li>
+            <li>Click "Start Blinking" to see images alternating for visual comparison.</li>
+            <li>Click "Stop Blinking" to stop the animation.</li>
+        </ol>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 TextCompare.top · Free Image Comparison Tool
+</footer>
+
+<script>
+    let imgA = new Image();
+    let imgB = new Image();
+    let blinkInterval;
+
+    const canvasA = document.getElementById('canvasA');
+    const canvasB = document.getElementById('canvasB');
+    const canvasDiff = document.getElementById('canvasDiff');
+    const ctxA = canvasA.getContext('2d');
+    const ctxB = canvasB.getContext('2d');
+    const ctxDiff = canvasDiff.getContext('2d');
+
+    function readFile(inputId, canvasId, nameSpanId){
+        const fileInput = document.getElementById(inputId);
+        const nameSpan = document.getElementById(nameSpanId);
+        if(fileInput.files.length===0) return;
+        const file = fileInput.files[0];
+        nameSpan.textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const img = new Image();
+            img.onload = function(){
+                const canvas = document.getElementById(canvasId);
+                const ctx = canvas.getContext('2d');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img,0,0);
+                if(inputId==='imgA') imgA=img;
+                if(inputId==='imgB') imgB=img;
+            }
+            img.src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function generateDiff(){
+        if(!imgA.src || !imgB.src){
+            alert("Please upload both images.");
+            return;
+        }
+        const width = Math.min(imgA.width,imgB.width);
+        const height = Math.min(imgA.height,imgB.height);
+        canvasDiff.width = width;
+        canvasDiff.height = height;
+        ctxDiff.clearRect(0,0,width,height);
+
+        const dataA = ctxA.getImageData(0,0,width,height);
+        const dataB = ctxB.getImageData(0,0,width,height);
+        const diffData = ctxDiff.createImageData(width,height);
+
+        for(let i=0;i<dataA.data.length;i+=4){
+            const rDiff = Math.abs(dataA.data[i]-dataB.data[i]);
+            const gDiff = Math.abs(dataA.data[i+1]-dataB.data[i+1]);
+            const bDiff = Math.abs(dataA.data[i+2]-dataB.data[i+2]);
+            const diff = rDiff+gDiff+bDiff;
+            if(diff>30){
+                diffData.data[i]=255;
+                diffData.data[i+1]=0;
+                diffData.data[i+2]=0;
+                diffData.data[i+3]=200;
+            }else{
+                diffData.data[i+3]=0;
+            }
+        }
+        ctxDiff.putImageData(diffData,0,0);
+    }
+
+    // 闪烁模式
+    function startBlink(){
+        if(!imgA.src || !imgB.src){
+            alert("Please upload both images.");
+            return;
+        }
+        stopBlink();
+        const width = Math.min(imgA.width,imgB.width);
+        const height = Math.min(imgA.height,imgB.height);
+        canvasDiff.width = width;
+        canvasDiff.height = height;
+        let showA = true;
+        blinkInterval = setInterval(()=>{
+            ctxDiff.clearRect(0,0,width,height);
+            if(showA){
+                ctxDiff.drawImage(imgA,0,0,width,height);
+            }else{
+                ctxDiff.drawImage(imgB,0,0,width,height);
+            }
+            showA=!showA;
+        },500);
+    }
+    function stopBlink(){ clearInterval(blinkInterval); }
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KBM3ZNXXDG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KBM3ZNXXDG');
+</script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "v3c4qsa20s");
+</script>
+</body>
+</html>
