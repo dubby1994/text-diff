@@ -4,231 +4,664 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- SEO -->
-    <title>Online Text Compare Tool – Compare Text Differences Instantly</title>
-    <meta name="description" content="Free online text compare tool. Compare two texts and highlight differences instantly. Ideal for documents, code, and content comparison." />
-    <meta name="keywords" content="text compare, compare text online, diff tool, text diff" />
+    <title>TextDiff – Compare Text, JSON, Excel & Images</title>
+    <meta name="description" content="Free online text, JSON, Excel and image comparison tool. Compare differences instantly. Works entirely in your browser." />
+    <meta name="keywords" content="text compare, json diff, excel compare, image diff, diff tool" />
 
-    <!-- Open Graph（分享用） -->
-    <meta property="og:title" content="Online Text Compare Tool" />
-    <meta property="og:description" content="Compare two texts and highlight differences instantly." />
+    <meta property="og:title" content="TextDiff – Compare Text, JSON, Excel & Images" />
+    <meta property="og:description" content="Compare text, JSON, Excel files and images instantly. Works entirely in your browser." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://textcompare.top/" />
 
-    <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDM2IDM2Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI4IiBmaWxsPSIjMWExYTJlIi8+PHRleHQgeD0iMTgiIHk9IjI0IiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Jmx0Oy8mZ3Q7PC90ZXh0Pjwvc3ZnPg==" />
 
     <style>
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
-            background: #f7f8fa;
-            color: #333;
-        }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Hiragino Sans GB",Roboto,"PingFang SC",Arial,sans-serif;background:#f8f9fc;color:#1a1a2e;line-height:1.6}
+        .page{max-width:1200px;margin:0 auto;padding:24px 20px;min-height:100vh}
+        header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px}
+        .logo{display:flex;align-items:center;gap:10px}
+        .logo-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#1a1a2e,#2d2d44);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+        .logo-text{font-size:22px;font-weight:700;letter-spacing:-0.5px;color:#1a1a2e}
+        .controls{display:flex;gap:8px;align-items:center}
+        .mode-toggle{display:flex;background:#fff;border-radius:10px;padding:3px;border:1px solid #e2e4e8;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+        .mode-toggle button{border:none;padding:7px 14px;font-size:13px;font-weight:600;border-radius:8px;cursor:pointer;transition:all .2s;color:#6b7280;background:transparent}
+        .mode-toggle button.active{background:#1a1a2e;color:#fff;box-shadow:0 2px 8px rgba(26,26,46,.2)}
+        .mode-toggle button:hover:not(.active){background:#f3f4f6}
+        .lang-select{background:#fff;border:1px solid #e2e4e8;border-radius:8px;padding:7px 12px;font-size:13px;color:#4b5563;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:32px;min-width:100px}
+        .lang-select:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+        .editor{display:flex;gap:16px;margin-bottom:24px}
+        .editor-col{flex:1;display:flex;flex-direction:column;gap:8px}
+        .editor-col label{font-size:13px;font-weight:600;color:#4b5563}
+        .editor-col textarea{width:100%;min-height:220px;padding:14px;font-size:14px;font-family:"SF Mono","Fira Code","Cascadia Code","Noto Sans Mono",Consolas,monospace;border:1px solid #e2e4e8;border-radius:10px;resize:vertical;background:#fff;transition:border-color .2s;color:#1a1a2e;line-height:1.7}
+        .editor-col textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.12)}
+        .editor-col textarea::placeholder{color:#9ca3af}
+        .upload-card{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+        .upload-section{flex:1;min-width:200px;background:#fff;padding:16px;border-radius:10px;border:1px solid #e2e4e8;display:flex;flex-direction:column;gap:8px}
+        .upload-section label{font-weight:600;margin-bottom:0;color:#4b5563}
+        .file-btn{background:#1a1a2e;color:#fff;border:none;padding:8px 16px;font-size:14px;font-weight:600;border-radius:8px;cursor:pointer;transition:all .2s}
+        .file-btn:hover{background:#2d2d44}
+        .file-name{color:#6b7280;font-size:12px;margin-left:8px}
+        .canvas-container{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:24px}
+        canvas{border:1px solid #e2e4e8;border-radius:10px;max-width:100%}
+        canvas#canvasDiff{border:1px solid #dc2626}
+        .actions{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+        .btn{padding:9px 20px;font-size:14px;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+        .btn-primary{background:#1a1a2e;color:#fff}
+        .btn-primary:hover{background:#2d2d44;transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,26,46,.2)}
+        .btn-secondary{background:#fff;color:#4b5563;border:1px solid #e2e4e8}
+        .btn-secondary:hover{background:#f9fafb;border-color:#d1d5db}
+        .error{color:#dc2626;font-size:13px;margin-bottom:8px;display:none}
+        .error.show{display:block}
+        .result-wrap{background:#fff;border-radius:12px;border:1px solid #e2e4e8;overflow:hidden;margin-bottom:24px}
+        .result-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#f8f9fc;border-bottom:1px solid #e2e4e8;font-size:13px;color:#6b7280}
+        .result-bar .stat span{font-weight:600;color:#1a1a2e}
+        #outputdiv{white-space:pre-wrap;font-family:"SF Mono","Fira Code",Consolas,monospace;font-size:13px;line-height:1.8;max-height:500px;overflow-y:auto;padding:16px}
+        #outputdiv,.diff-table-container{width:100%;overflow:auto}
+        .diff-table-container table{border-collapse:collapse;width:100%;font-size:13px}
+        .diff-table-container td,.diff-table-container th{border:1px solid #e2e4e8;padding:6px 10px}
+        .diff-table-container .diff-cell{background:#fee2e2;color:#991b1b}
+        .diff-table-container caption{font-weight:600;margin-bottom:8px;color:#1a1a2e}
+        .diff-table-container{margin-top:8px}
+        .added{background:#dcfce7;color:#166534}
+        .removed{background:#fee2e2;color:#991b1b;text-decoration:line-through}
+        footer{text-align:center;padding:32px 0 16px;font-size:13px;color:#9ca3af}
+        footer a{color:#3b82f6;text-decoration:none}
+        footer a:hover{text-decoration:underline}
+        .mode-hint{text-align:center;font-size:13px;color:#6b7280;margin-bottom:16px}
 
-        header {
-            padding: 32px 16px;
-            text-align: center;
+        @media(max-width:768px){
+            .page{padding:16px 12px}
+            header{flex-direction:column;align-items:flex-start}
+            .controls{width:100%;flex-wrap:wrap}
+            .mode-toggle{flex:1}
+            .editor{flex-direction:column}
+            .actions{flex-wrap:wrap}
+            .upload-card{flex-direction:column}
+            .upload-section{min-width:unset}
+            .canvas-container{flex-direction:column}
         }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 12px;
-        }
-
-        header p {
-            max-width: 720px;
-            margin: 0 auto;
-            color: #666;
-            font-size: 16px;
-        }
-
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 16px;
-        }
-
-        .editor {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 240px;
-            padding: 12px;
-            font-size: 14px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            resize: vertical;
-        }
-
-        .actions {
-            text-align: center;
-            margin: 16px 0;
-        }
-
-        button {
-            background: #2563eb;
-            color: #fff;
-            border: none;
-            padding: 10px 24px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1e40af;
-        }
-
-        .result {
-            background: #fff;
-            padding: 16px;
-            border-radius: 6px;
-            border: 1px solid #e5e7eb;
-            white-space: pre-wrap;
-            font-family: Consolas, monospace;
-            line-height: 1.6;
-        }
-
-        .added {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .removed {
-            background: #fee2e2;
-            color: #991b1b;
-            text-decoration: line-through;
-        }
-
-        section {
-            margin-top: 48px;
-        }
-
-        section h2 {
-            font-size: 22px;
-            margin-bottom: 12px;
-        }
-
-        section p, section li {
-            color: #555;
-            line-height: 1.7;
-        }
-
-        footer {
-            text-align: center;
-            padding: 24px;
-            font-size: 14px;
-            color: #999;
-        }
-
-        @media (max-width: 768px) {
-            .editor {
-                flex-direction: column;
-            }
-        }
-
-        .fullscreen-link {
-            display: inline-block;
-            padding: 8px 14px;
-            font-size: 14px;
-            color: #2563eb;
-            border: 1px solid #2563eb;
-            border-radius: 6px;
-            text-decoration: none;
-        }
-
-        .fullscreen-link:hover {
-            background: #2563eb;
-            color: #fff;
-        }
-
     </style>
 </head>
 
 <body>
 
-<header>
-    <h1>Online Text Compare Tool</h1>
-    <p>
-        Compare two texts online and instantly highlight the differences.
-        Perfect for documents, code reviews, content editing, and version comparison.
-    </p>
-</header>
+<div class="page">
+    <header>
+        <div class="logo">
+            <div class="logo-icon">&lt;/&gt;</div>
+            <span class="logo-text">TextDiff</span>
+        </div>
+        <div class="controls">
+            <div class="mode-toggle" id="modeToggle">
+                <button class="active" data-mode="text">Text</button>
+                <button data-mode="json">JSON</button>
+                <button data-mode="excel">Excel</button>
+                <button data-mode="image">Image</button>
+            </div>
+            <select class="lang-select" id="langSelect" aria-label="Language">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="zh-Hant">繁體中文</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+                <option value="vi">Tiếng Việt</option>
+                <option value="id">Bahasa</option>
+                <option value="ru">Русский</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="ms">Bahasa Melayu</option>
+            </select>
+        </div>
+    </header>
 
-<main>
+    <main>
 
-    <!-- 工具区 -->
-    <div class="editor">
-        <textarea id="baseText" placeholder="Paste original text here..." oninput="diffUsingJS()"></textarea>
-        <textarea id="newText" placeholder="Paste modified text here..." oninput="diffUsingJS()"></textarea>
-    </div>
+        <div id="textJsonPanel" class="editor">
+            <div class="editor-col">
+                <label id="labelLeft">Original</label>
+                <textarea id="baseText" placeholder="Paste original text here..." oninput="diffUsingJS()"></textarea>
+            </div>
+            <div class="editor-col">
+                <label id="labelRight">Modified</label>
+                <textarea id="newText" placeholder="Paste modified text here..." oninput="diffUsingJS()"></textarea>
+            </div>
+        </div>
 
-    <div class="actions">
-        <a href="/fullscreen.html" class="fullscreen-link" target="_blank">
-            ⛶ Fullscreen Compare
-        </a>
-    </div>
+        <div id="excelPanel" style="display:none;">
+            <div class="mode-hint" id="excelHint">Select two Excel files and click Compare</div>
+            <div class="upload-card">
+                <div class="upload-section">
+                    <label>Excel File A</label>
+                    <input type="file" id="fileA" accept=".xlsx,.xls" style="display:none" />
+                    <button class="file-btn" onclick="document.getElementById('fileA').click()">Select File A</button>
+                    <span id="fileAName" class="file-name">No file selected</span>
+                </div>
+                <div class="upload-section">
+                    <label>Excel File B</label>
+                    <input type="file" id="fileB" accept=".xlsx,.xls" style="display:none" />
+                    <button class="file-btn" onclick="document.getElementById('fileB').click()">Select File B</button>
+                    <span id="fileBName" class="file-name">No file selected</span>
+                </div>
+            </div>
+        </div>
 
-    <div id="outputdiv" class="result"></div>
+        <div id="imagePanel" style="display:none;">
+            <div class="mode-hint" id="imageHint">Upload two images to compare</div>
+            <div class="upload-card">
+                <div class="upload-section">
+                    <label>Image A</label>
+                    <input type="file" id="imgA" accept="image/*" style="display:none" onchange="readImage('imgA','canvasA','imgAName')" />
+                    <button class="file-btn" onclick="document.getElementById('imgA').click()">Select Image A</button>
+                    <span id="imgAName" class="file-name">No file selected</span>
+                </div>
+                <div class="upload-section">
+                    <label>Image B</label>
+                    <input type="file" id="imgB" accept="image/*" style="display:none" onchange="readImage('imgB','canvasB','imgBName')" />
+                    <button class="file-btn" onclick="document.getElementById('imgB').click()">Select Image B</button>
+                    <span id="imgBName" class="file-name">No file selected</span>
+                </div>
+            </div>
+        </div>
 
-    <!-- SEO / 使用说明 -->
-    <section>
-        <h2>How to Compare Text Online</h2>
-        <p>
-            Using our text comparison tool is simple:
-        </p>
-        <ol>
-            <li>Paste the original text into the left box.</li>
-            <li>Paste the modified text into the right box.</li>
-            <li>View highlighted differences instantly.</li>
-        </ol>
-    </section>
+        <div id="errorBox" class="error"></div>
 
-    <section>
-        <h2>Common Use Cases</h2>
-        <ul>
-            <li>Compare document revisions</li>
-            <li>Check content edits before publishing</li>
-            <li>Find differences between code snippets</li>
-            <li>Detect plagiarism or duplicated content</li>
-        </ul>
-    </section>
+        <div class="actions" id="actionsBar">
+            <button class="btn btn-secondary" id="btnFormatLeft">Format Left</button>
+            <button class="btn btn-secondary" id="btnFormatRight">Format Right</button>
+            <button class="btn btn-primary" id="btnCompare">Compare</button>
+            <button class="btn btn-secondary" id="btnExample">Load Example</button>
+            <button class="btn btn-secondary" id="btnBlinkStart" style="display:none;">Start Blink</button>
+            <button class="btn btn-secondary" id="btnBlinkStop" style="display:none;">Stop Blink</button>
+        </div>
 
-    <section>
-        <h2>FAQ</h2>
-        <p><strong>Is this text compare tool free?</strong><br/>Yes, it is completely free to use.</p>
-        <p><strong>Is my text stored?</strong><br/>No, all comparisons are processed in your browser.</p>
-    </section>
+        <div class="canvas-container" id="canvasContainer" style="display:none;margin-bottom:24px;">
+            <canvas id="canvasA"></canvas>
+            <canvas id="canvasB"></canvas>
+            <canvas id="canvasDiff"></canvas>
+        </div>
 
-</main>
+        <div class="result-wrap" id="resultWrap">
+            <div class="result-bar">
+                <span id="resultLabel">Diff Result</span>
+                <span id="resultStats"></span>
+            </div>
+            <div id="outputdiv" class="result"></div>
+        </div>
 
-<footer>
-    © 2026 TextCompare.top · Free Online Text Comparison Tool
-</footer>
+    </main>
+
+<footer id="footerText">
+        TextDiff · All comparisons run locally in your browser · No data is sent to any server
+    </footer>
+</div>
 
 <script src="/js/lib/diff_match_patch.js"></script>
-<script src="/js/textdiff.js"></script>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KBM3ZNXXDG"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+const i18n={
+    en:{
+        original:"Original",modified:"Modified",
+        placeholderLeft:"Paste original text here...",placeholderRight:"Paste modified text here...",
+        formatLeft:"Format Left",formatRight:"Format Right",compare:"Compare",example:"Load Example",
+        diffResult:"Diff Result",added:"added",removed:"removed",error:"Invalid JSON format",
+        footer:"TextDiff · All comparisons run locally in your browser · No data is sent to any server",
+        labelText:"Text",labelJson:"JSON",labelExcel:"Excel",labelImage:"Image",
+        excelHint:"Select two Excel files and click Compare",
+        imageHint:"Upload two images to compare",
+        pixelDiff:"Generate Pixel Diff",startBlink:"Start Blink",stopBlink:"Stop Blink",
+        selectBoth:"Please select both files"
+    },
+    zh:{
+        original:"原始文本",modified:"修改后文本",
+        placeholderLeft:"在此粘贴原始文本...",placeholderRight:"在此粘贴修改后文本...",
+        formatLeft:"格式化左侧",formatRight:"格式化右侧",compare:"对比",example:"加载示例",
+        diffResult:"差异结果",added:"新增",removed:"删除",error:"JSON格式无效",
+        footer:"TextDiff · 所有对比均在浏览器本地完成 · 数据不会上传到服务器",
+        labelText:"文本",labelJson:"JSON",labelExcel:"Excel",labelImage:"图片",
+        excelHint:"选择两个Excel文件并点击对比",
+        imageHint:"上传两张图片进行比较",
+        pixelDiff:"生成像素差",startBlink:"开始闪烁",stopBlink:"停止闪烁",
+        selectBoth:"请选择两个文件"
+    },
+    "zh-Hant":{
+        original:"原始文本",modified:"修改後文本",
+        placeholderLeft:"在此貼上原始文本...",placeholderRight:"在此貼上修改後文本...",
+        formatLeft:"格式化左側",formatRight:"格式化右側",compare:"對比",example:"加載示例",
+        diffResult:"差異結果",added:"新增",removed:"刪除",error:"JSON格式無效",
+        footer:"TextDiff · 所有對比均在瀏覽器本地完成 · 數據不會上傳到伺服器",
+        labelText:"文本",labelJson:"JSON",labelExcel:"Excel",labelImage:"圖片",
+        excelHint:"選擇兩個Excel文件並點擊對比",
+        imageHint:"上傳兩張圖片進行比較",
+        pixelDiff:"生成像素差",startBlink:"開始閃爍",stopBlink:"停止閃爍",
+        selectBoth:"請選擇兩個文件"
+    },
+    ja:{
+        original:"元のテキスト",modified:"変更後のテキスト",
+        placeholderLeft:"元のテキストをここに貼り付けてください...",placeholderRight:"変更後のテキストをここに貼り付けてください...",
+        formatLeft:"左を整形",formatRight:"右を整形",compare:"比較",example:"サンプルを読み込み",
+        diffResult:"差分結果",added:"追加",removed:"削除",error:"無効なJSON形式",
+        footer:"TextDiff · すべての比較はブラウザ上で実行されます · データはサーバーに送信されません",
+        labelText:"テキスト",labelJson:"JSON",labelExcel:"Excel",labelImage:"画像",
+        excelHint:"2つのExcelファイルを選択して比較",
+        imageHint:"2つの画像をアップロードして比較",
+        pixelDiff:"ピクセル差分を生成",startBlink:"点滅開始",stopBlink:"点滅停止",
+        selectBoth:"2つのファイルを選択してください"
+    },
+    ko:{
+        original:"원본 텍스트",modified:"수정된 텍스트",
+        placeholderLeft:"원본 텍스트를 붙여넣으세요...",placeholderRight:"수정된 텍스트를 붙여넣으세요...",
+        formatLeft:"왼쪽 서식",formatRight:"오른쪽 서식",compare:"비교",example:"예제 로드",
+        diffResult:"차이 결과",added:"추가",removed:"삭제",error:"잘못된 JSON 형식",
+        footer:"TextDiff · 모든 비교는 브라우저에서 로컬로 실행됩니다 · 데이터는 서버로 전송되지 않습니다",
+        labelText:"텍스트",labelJson:"JSON",labelExcel:"Excel",labelImage:"이미지",
+        excelHint:"두 개의 Excel 파일을 선택하고 비교를 클릭하세요",
+        imageHint:"두 이미지를 업로드하여 비교",
+        pixelDiff:"픽셀 차이 생성",startBlink:"깜빡이기 시작",stopBlink:"깜빡이기 중지",
+        selectBoth:"두 파일을 모두 선택하세요"
+    },
+    vi:{
+        original:"Văn bản gốc",modified:"Văn bản đã sửa",
+        placeholderLeft:"Dán văn bản gốc vào đây...",placeholderRight:"Dán văn bản đã sửa vào đây...",
+        formatLeft:"Định dạng bên trái",formatRight:"Định dạng bên phải",compare:"So sánh",example:"Tải ví dụ",
+        diffResult:"Kết quả chênh lệch",added:"thêm",removed:"xóa",error:"Định dạng JSON không hợp lệ",
+        footer:"TextDiff · Tất cả so sánh chạy cục bộ trên trình duyệt · Không có dữ liệu nào được gửi đến máy chủ",
+        labelText:"Văn bản",labelJson:"JSON",labelExcel:"Excel",labelImage:"Hình ảnh",
+        excelHint:"Chọn hai tệp Excel và nhấn So sánh",
+        imageHint:"Tải lên hai hình ảnh để so sánh",
+        pixelDiff:"Tạo khác biệt pixel",startBlink:"Bắt đầu nhấp nháy",stopBlink:"Dừng nhấp nháy",
+        selectBoth:"Vui lòng chọn cả hai tệp"
+    },
+    id:{
+        original:"Teks Asli",modified:"Teks Dimodifikasi",
+        placeholderLeft:"Tempelkan teks asli di sini...",placeholderRight:"Tempelkan teks dimodifikasi di sini...",
+        formatLeft:"Format Kiri",formatRight:"Format Kanan",compare:"Bandingkan",example:"Contoh",
+        diffResult:"Hasil Perbandingan",added:"tambah",removed:"hapus",error:"Format JSON tidak valid",
+        footer:"TextDiff · Semua perbandingan berjalan secara lokal di browser · Tidak ada data yang dikirim ke server",
+        labelText:"Teks",labelJson:"JSON",labelExcel:"Excel",labelImage:"Gambar",
+        excelHint:"Pilih dua file Excel dan klik Bandingkan",
+        imageHint:"Unggah dua gambar untuk dibandingkan",
+        pixelDiff:"Buat Perbedaan Pixel",startBlink:"Mulai Berkedip",stopBlink:"Hentikan Berkedip",
+        selectBoth:"Silakan pilih kedua file"
+    },
+    ru:{
+        original:"Исходный текст",modified:"Измененный текст",
+        placeholderLeft:"Вставьте исходный текст здесь...",placeholderRight:"Вставьте измененный текст здесь...",
+        formatLeft:"Форматировать слева",formatRight:"Форматировать справа",compare:"Сравнить",example:"Пример",
+        diffResult:"Результат сравнения",added:"добавлено",removed:"удалено",error:"Неверный формат JSON",
+        footer:"TextDiff · Все сравнения выполняются локально в браузере · Данные не отправляются на сервер",
+        labelText:"Текст",labelJson:"JSON",labelExcel:"Excel",labelImage:"Изображение",
+        excelHint:"Выберите два файла Excel и нажмите Сравнить",
+        imageHint:"Загрузите два изображения для сравнения",
+        pixelDiff:"Пиксельное сравнение",startBlink:"Мигание",stopBlink:"Остановить мигание",
+        selectBoth:"Пожалуйста, выберите оба файла"
+    },
+    es:{
+        original:"Texto original",modified:"Texto modificado",
+        placeholderLeft:"Pega el texto original aquí...",placeholderRight:"Pega el texto modificado aquí...",
+        formatLeft:"Formatear izquierda",formatRight:"Formatear derecha",compare:"Comparar",example:"Ejemplo",
+        diffResult:"Resultado de la comparación",added:"añadido",removed:"eliminado",error:"Formato JSON no válido",
+        footer:"TextDiff · Todas las comparaciones se ejecutan localmente en el navegador · No se envían datos al servidor",
+        labelText:"Texto",labelJson:"JSON",labelExcel:"Excel",labelImage:"Imagen",
+        excelHint:"Selecciona dos archivos Excel y haz clic en Comparar",
+        imageHint:"Sube dos imágenes para comparar",
+        pixelDiff:"Diferencia de píxeles",startBlink:"Parpadear",stopBlink:"Detener parpadeo",
+        selectBoth:"Por favor selecciona ambos archivos"
+    },
+    de:{
+        original:"Originaltext",modified:"Geänderter Text",
+        placeholderLeft:"Originaltext hier einfügen...",placeholderRight:"Geänderten Text hier einfügen...",
+        formatLeft:"Links formatieren",formatRight:"Rechts formatieren",compare:"Vergleichen",example:"Beispiel",
+        diffResult:"Vergleichsergebnis",added:"hinzugefügt",removed:"entfernt",error:"Ungültiges JSON-Format",
+        footer:"TextDiff · Alle Vergleiche werden lokal im Browser ausgeführt · Es werden keine Daten an den Server gesendet",
+        labelText:"Text",labelJson:"JSON",labelExcel:"Excel",labelImage:"Bild",
+        excelHint:"Zwei Excel-Dateien auswählen und Vergleichen klicken",
+        imageHint:"Zwei Bilder zum Vergleichen hochladen",
+        pixelDiff:"Pixel-Differenz erzeugen",startBlink:"Blinken starten",stopBlink:"Blinken stoppen",
+        selectBoth:"Bitte beide Dateien auswählen"
+    },
+    ms:{
+        original:"Teks Asal",modified:"Teks Diubah",
+        placeholderLeft:"Tampal teks asal di sini...",placeholderRight:"Tampal teks diubah di sini...",
+        formatLeft:"Format Kiri",formatRight:"Format Kanan",compare:"Bandingkan",example:"Contoh",
+        diffResult:"Keputusan Perbezaan",added:"tambah",removed:"hapus",error:"Format JSON tidak sah",
+        footer:"TextDiff · Semua perbandingan dijalankan secara setempat dalam pelayar · Tiada data dihantar ke pelayan",
+        labelText:"Teks",labelJson:"JSON",labelExcel:"Excel",labelImage:"Imej",
+        excelHint:"Pilih dua fail Excel dan klik Bandingkan",
+        imageHint:"Muat naik dua imej untuk perbandingan",
+        pixelDiff:"Jana Bezakan Pixel",startBlink:"Mulai Kelip-kelip",stopBlink:"Hentikan Kelip-kelip",
+        selectBoth:"Sila pilih kedua-dua fail"
+    }
+};
 
-    gtag('config', 'G-KBM3ZNXXDG');
-</script>
+let currentLang='en',currentMode='text';
+let diffCache={base:'',new:''};
+let workbookA=null,workbookB=null;
+let imgA=null,imgB=null,blinkInterval=null;
+const canvasA=document.getElementById('canvasA');
+const canvasB=document.getElementById('canvasB');
+const canvasDiff=document.getElementById('canvasDiff');
+const ctxA=canvasA.getContext('2d');
+const ctxB=canvasB.getContext('2d');
+const ctxDiff=canvasDiff.getContext('2d');
 
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "v3c4qsa20s");
+function diffUsingJS(){
+    const dmp=new diff_match_patch();
+    let t1=document.getElementById('baseText').value;
+    let t2=document.getElementById('newText').value;
+    if(currentMode==='json'){
+        try{
+            t1=JSON.stringify(JSON.parse(t1),null,2);
+            t2=JSON.stringify(JSON.parse(t2),null,2);
+            document.getElementById('baseText').value=t1;
+            document.getElementById('newText').value=t2;
+            document.getElementById('errorBox').classList.remove('show');
+        }catch(e){
+            document.getElementById('errorBox').textContent=i18n[currentLang].error;
+            document.getElementById('errorBox').classList.add('show');
+            return;
+        }
+    }
+    if(t1===diffCache.base&&t2===diffCache.new)return;
+    diffCache.base=t1;diffCache.new=t2;
+    const d=dmp.diff_main(t1,t2);
+    dmp.diff_cleanupSemantic(d);
+    const ds=dmp.diff_prettyHtml(d).replace(/&para;/g,'');
+    document.getElementById('outputdiv').innerHTML=ds;
+    updateStats(d);
+}
+
+function updateStats(d){
+    let a=0,r=0;
+    for(const op of d){if(op[0]===1)a++;if(op[0]===-1)r++}
+    document.getElementById('resultStats').textContent=(a||r)?`${i18n[currentLang].added} ${a} · ${i18n[currentLang].removed} ${r}`:'';
+}
+
+function formatJSON(id){
+    const ta=document.getElementById(id);
+    try{
+        ta.value=JSON.stringify(JSON.parse(ta.value),null,2);
+        document.getElementById('errorBox').classList.remove('show');
+    }catch(e){
+        document.getElementById('errorBox').textContent=i18n[currentLang].error;
+        document.getElementById('errorBox').classList.add('show');
+    }
+}
+
+function setLang(lang){
+    currentLang=lang;
+    const l=i18n[lang];
+    document.getElementById('labelLeft').textContent=l.original;
+    document.getElementById('labelRight').textContent=l.modified;
+    document.getElementById('baseText').placeholder=l.placeholderLeft;
+    document.getElementById('newText').placeholder=l.placeholderRight;
+    document.getElementById('btnFormatLeft').textContent=l.formatLeft;
+    document.getElementById('btnFormatRight').textContent=l.formatRight;
+    document.getElementById('btnCompare').textContent=l.compare;
+    document.getElementById('btnExample').textContent=l.example;
+    document.getElementById('resultLabel').textContent=l.diffResult;
+    document.getElementById('resultStats').innerHTML='';
+    document.getElementById('errorBox').textContent=l.error;
+    document.getElementById('footerText').textContent=l.footer;
+    const modeToggle=document.getElementById('modeToggle');
+    const modeLabels={text:l.labelText,json:l.labelJson,excel:l.labelExcel,image:l.labelImage};
+    modeToggle.querySelectorAll('button').forEach(b=>b.textContent=modeLabels[b.dataset.mode]||b.dataset.mode);
+    document.getElementById('excelHint').textContent=l.excelHint;
+    document.getElementById('imageHint').textContent=l.imageHint;
+    document.querySelector('html').lang=lang==='zh-Hant'?'zh-Hant':lang;
+}
+
+function setMode(mode){
+    currentMode=mode;
+    document.getElementById('modeToggle').querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+    const l=i18n[currentLang];
+    document.getElementById('textJsonPanel').style.display=(mode==='text'||mode==='json')?'flex':'none';
+    document.getElementById('excelPanel').style.display=mode==='excel'?'block':'none';
+    document.getElementById('imagePanel').style.display=mode==='image'?'block':'none';
+    document.getElementById('canvasContainer').style.display=mode==='image'?'flex':'none';
+    const canvasWrap=document.getElementById('resultWrap');
+    canvasWrap.innerHTML='<div class="result-bar"><span id="resultLabel">'+l.diffResult+'</span><span id="resultStats"></span></div><div id="outputdiv" class="result"></div>';
+    if(mode==='json'){
+        document.getElementById('baseText').placeholder=l.placeholderLeft;
+        document.getElementById('newText').placeholder=l.placeholderRight;
+        document.getElementById('btnFormatLeft').style.display='inline-block';
+        document.getElementById('btnFormatRight').style.display='inline-block';
+        document.getElementById('btnCompare').onclick=()=>diffUsingJS();
+        document.getElementById('btnExample').onclick=loadJSONExample;
+    }else if(mode==='text'){
+        document.getElementById('baseText').placeholder=l.placeholderLeft;
+        document.getElementById('newText').placeholder=l.placeholderRight;
+        document.getElementById('btnFormatLeft').style.display='none';
+        document.getElementById('btnFormatRight').style.display='none';
+        document.getElementById('btnBlinkStart').style.display='none';
+        document.getElementById('btnBlinkStop').style.display='none';
+        document.getElementById('btnCompare').onclick=diffUsingJS;
+        document.getElementById('btnExample').onclick=loadTextExample;
+    }else if(mode==='excel'){
+        document.getElementById('btnFormatLeft').style.display='none';
+        document.getElementById('btnFormatRight').style.display='none';
+        document.getElementById('btnBlinkStart').style.display='none';
+        document.getElementById('btnBlinkStop').style.display='none';
+        document.getElementById('btnCompare').onclick=compareExcel;
+        document.getElementById('btnExample').onclick=loadJSONExample;
+    }else if(mode==='image'){
+        document.getElementById('btnFormatLeft').style.display='none';
+        document.getElementById('btnFormatRight').style.display='none';
+        document.getElementById('btnBlinkStart').style.display='inline-block';
+        document.getElementById('btnBlinkStop').style.display='inline-block';
+        document.getElementById('btnCompare').onclick=generatePixelDiff;
+    }else{
+        document.getElementById('btnBlinkStart').style.display='none';
+        document.getElementById('btnBlinkStop').style.display='none';
+    }
+    document.getElementById('errorBox').classList.remove('show');
+    if(mode==='text'||mode==='json'){
+        diffCache={base:'',new:''};
+        document.getElementById('baseText').value='';
+        document.getElementById('newText').value='';
+        document.getElementById('outputdiv').innerHTML='';
+    }else if(mode==='excel'){
+        workbookA=null;workbookB=null;
+        document.getElementById('fileAName').textContent='No file selected';
+        document.getElementById('fileBName').textContent='No file selected';
+        document.getElementById('outputdiv').innerHTML='';
+    }else if(mode==='image'){
+        imgA=null;imgB=null;
+        if(blinkInterval){clearInterval(blinkInterval);blinkInterval=null}
+        document.getElementById('imgAName').textContent='No file selected';
+        document.getElementById('imgBName').textContent='No file selected';
+        ctxA.clearRect(0,0,canvasA.width,canvasA.height);
+        ctxB.clearRect(0,0,canvasB.width,canvasB.height);
+        ctxDiff.clearRect(0,0,canvasDiff.width,canvasDiff.height);
+        document.getElementById('outputdiv').innerHTML='';
+    }
+    document.getElementById('resultStats').innerHTML='';
+}
+
+document.getElementById('fileA').addEventListener('change',function(){
+    if(this.files.length>0){
+        document.getElementById('fileAName').textContent=this.files[0].name;
+        const reader=new FileReader();
+        reader.onload=function(e){
+            const data=new Uint8Array(e.target.result);
+            workbookA=XLSX.read(data,{type:'array'});
+        };
+        reader.readAsArrayBuffer(this.files[0]);
+    }
+});
+document.getElementById('fileB').addEventListener('change',function(){
+    if(this.files.length>0){
+        document.getElementById('fileBName').textContent=this.files[0].name;
+        const reader=new FileReader();
+        reader.onload=function(e){
+            const data=new Uint8Array(e.target.result);
+            workbookB=XLSX.read(data,{type:'array'});
+        };
+        reader.readAsArrayBuffer(this.files[0]);
+    }
+});
+
+function compareExcel(){
+    const l=i18n[currentLang];
+    if(!workbookA||!workbookB){
+        alert(l.selectBoth);return;
+    }
+    const resultDiv=document.getElementById('outputdiv');
+    resultDiv.innerHTML='';
+    const sheetNames=workbookA.SheetNames.filter(name=>workbookB.SheetNames.includes(name));
+    if(sheetNames.length===0){
+        resultDiv.innerHTML='<p style="color:#6b7280;padding:16px;">No matching sheets found.</p>';
+        return;
+    }
+    const container=document.createElement('div');
+    container.className='diff-table-container';
+    sheetNames.forEach(sheetName=>{
+        const table=document.createElement('table');
+        const caption=document.createElement('caption');
+        caption.textContent=l.diffResult+': '+sheetName;
+        table.appendChild(caption);
+        const sheetA=XLSX.utils.sheet_to_json(workbookA.Sheets[sheetName],{header:1});
+        const sheetB=XLSX.utils.sheet_to_json(workbookB.Sheets[sheetName],{header:1});
+        const maxRows=Math.max(sheetA.length,sheetB.length);
+        const maxCols=Math.max(...sheetA.map(r=>r.length),...sheetB.map(r=>r.length));
+        for(let i=0;i<maxRows;i++){
+            const tr=document.createElement('tr');
+            for(let j=0;j<maxCols;j++){
+                const td=document.createElement('td');
+                const valA=sheetA[i]&&sheetA[i][j]!==undefined?sheetA[i][j]:'';
+                const valB=sheetB[i]&&sheetB[i][j]!==undefined?sheetB[i][j]:'';
+                td.textContent=valB;
+                if(valA!=valB)td.classList.add('diff-cell');
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        container.appendChild(table);
+    });
+    resultDiv.appendChild(container);
+}
+
+function readImage(inputId,canvasId,nameSpanId){
+    const fileInput=document.getElementById(inputId);
+    const nameSpan=document.getElementById(nameSpanId);
+    if(fileInput.files.length===0)return;
+    const file=fileInput.files[0];
+    nameSpan.textContent=file.name;
+    const reader=new FileReader();
+    reader.onload=function(e){
+        const img=new Image();
+        img.onload=function(){
+            const canvas=document.getElementById(canvasId);
+            const ctx=canvas.getContext('2d');
+            canvas.width=img.width;
+            canvas.height=img.height;
+            ctx.drawImage(img,0,0);
+            if(inputId==='imgA')imgA=img;
+            if(inputId==='imgB')imgB=img;
+        };
+        img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function generatePixelDiff(){
+    const l=i18n[currentLang];
+    if(!imgA||!imgB){
+        alert(l.selectBoth);return;
+    }
+    const width=Math.min(imgA.width,imgB.width);
+    const height=Math.min(imgA.height,imgB.height);
+    canvasDiff.width=width;canvasDiff.height=height;
+    ctxDiff.clearRect(0,0,width,height);
+    ctxA.clearRect(0,0,canvasA.width,canvasA.height);
+    ctxA.drawImage(imgA,0,0,width,height);
+    ctxB.clearRect(0,0,canvasB.width,canvasB.height);
+    ctxB.drawImage(imgB,0,0,width,height);
+    const dataA=ctxA.getImageData(0,0,width,height);
+    const dataB=ctxB.getImageData(0,0,width,height);
+    const diffData=ctxDiff.createImageData(width,height);
+    for(let i=0;i<dataA.data.length;i+=4){
+        const rDiff=Math.abs(dataA.data[i]-dataB.data[i]);
+        const gDiff=Math.abs(dataA.data[i+1]-dataB.data[i+1]);
+        const bDiff=Math.abs(dataA.data[i+2]-dataB.data[i+2]);
+        const diff=rDiff+gDiff+bDiff;
+        if(diff>30){
+            diffData.data[i]=255;diffData.data[i+1]=0;diffData.data[i+2]=0;diffData.data[i+3]=200;
+        }else{
+            diffData.data[i+3]=0;
+        }
+    }
+    ctxDiff.putImageData(diffData,0,0);
+}
+
+function startBlink(){
+    const l=i18n[currentLang];
+    if(!imgA||!imgB){
+        alert(l.selectBoth);return;
+    }
+    stopBlink();
+    const width=Math.min(imgA.width,imgB.width);
+    const height=Math.min(imgA.height,imgB.height);
+    canvasDiff.width=width;canvasDiff.height=height;
+    let showA=true;
+    blinkInterval=setInterval(()=>{
+        ctxDiff.clearRect(0,0,width,height);
+        if(showA)ctxDiff.drawImage(imgA,0,0,width,height);
+        else ctxDiff.drawImage(imgB,0,0,width,height);
+        showA=!showA;
+    },500);
+}
+
+function stopBlink(){if(blinkInterval){clearInterval(blinkInterval);blinkInterval=null}}
+
+function loadJSONExample(){
+    const jsonA=`{"name":"Alice","age":25,"city":"New York","skills":["JavaScript","Python"]}`;
+    const jsonB=`{"name":"Alice","age":26,"city":"New York","skills":["JavaScript","Python","Go"]}`;
+    document.getElementById('baseText').value=jsonA;
+    document.getElementById('newText').value=jsonB;
+    diffUsingJS();
+}
+function loadTextExample(){
+    const txtA=`Hello World!
+This is the original text.
+It contains several lines.
+We will compare this version.`;
+    const txtB=`Hello World!
+This is the modified text.
+It contains several lines.
+We will compare this version with some changes.`;
+    document.getElementById('baseText').value=txtA;
+    document.getElementById('newText').value=txtB;
+    diffUsingJS();
+}
+
+document.getElementById('langSelect').addEventListener('change',e=>{
+    localStorage.setItem('textdiff-lang',e.target.value);
+    setLang(e.target.value);
+});
+document.getElementById('modeToggle').addEventListener('click',e=>{
+    if(e.target.tagName==='BUTTON'){
+        localStorage.setItem('textdiff-mode',e.target.dataset.mode);
+        setMode(e.target.dataset.mode);
+    }
+});
+document.getElementById('btnCompare').addEventListener('click',()=>{
+    if(currentMode==='excel')compareExcel();
+    else if(currentMode==='image')generatePixelDiff();
+    else diffUsingJS();
+});
+document.getElementById('btnBlinkStart').addEventListener('click',startBlink);
+document.getElementById('btnBlinkStop').addEventListener('click',stopBlink);
+
+(function(){
+    const savedLang=localStorage.getItem('textdiff-lang');
+    const savedMode=localStorage.getItem('textdiff-mode');
+    if(savedLang)currentLang=savedLang;
+    if(savedMode)currentMode=savedMode;
+    document.getElementById('langSelect').value=currentLang;
+    setMode(currentMode);
+    setLang(currentLang);
+})();
 </script>
 
 </body>
