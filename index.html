@@ -93,11 +93,11 @@
             <span class="logo-text">TextDiff</span>
         </div>
         <div class="controls">
-            <div class="mode-toggle" id="modeToggle">
-                <button class="active" data-mode="text">Text</button>
-                <button data-mode="json">JSON</button>
-                <button data-mode="excel">Excel</button>
-                <button data-mode="image">Image</button>
+            <div class="mode-toggle" id="modeToggle" role="group" aria-label="Mode">
+                <button class="active" data-mode="text" aria-pressed="true">Text</button>
+                <button data-mode="json" aria-pressed="false">JSON</button>
+                <button data-mode="excel" aria-pressed="false">Excel</button>
+                <button data-mode="image" aria-pressed="false">Image</button>
             </div>
             <select class="lang-select" id="langSelect" aria-label="Language">
                 <option value="en">English</option>
@@ -120,11 +120,11 @@
         <div id="textJsonPanel" class="editor">
             <div class="editor-col">
                 <label id="labelLeft">Original</label>
-                <textarea id="baseText" placeholder="Paste original text here..." oninput="diffUsingJS()"></textarea>
+                <textarea id="baseText" placeholder="Paste original text here..."></textarea>
             </div>
             <div class="editor-col">
                 <label id="labelRight">Modified</label>
-                <textarea id="newText" placeholder="Paste modified text here..." oninput="diffUsingJS()"></textarea>
+                <textarea id="newText" placeholder="Paste modified text here..."></textarea>
             </div>
         </div>
 
@@ -164,7 +164,7 @@
             </div>
         </div>
 
-        <div id="errorBox" class="error"></div>
+        <div id="errorBox" class="error" role="alert"></div>
 
         <div class="actions" id="actionsBar">
             <button class="btn btn-secondary" id="btnFormatLeft">Format Left</button>
@@ -173,14 +173,14 @@
             <button class="btn btn-secondary" id="btnExample">Load Example</button>
             <button class="btn btn-secondary" id="btnBlinkStart" style="display:none;">Start Blink</button>
             <button class="btn btn-secondary" id="btnBlinkStop" style="display:none;">Stop Blink</button>
-            <button class="btn btn-secondary" id="btnExportHTML" onclick="downloadHTML()">Export HTML</button>
-            <button class="btn btn-secondary" id="btnExportImage" onclick="downloadImage()">Export Image</button>
+            <button class="btn btn-secondary" id="btnExportHTML">Export HTML</button>
+            <button class="btn btn-secondary" id="btnExportImage">Export Image</button>
         </div>
 
         <div class="canvas-container" id="canvasContainer" style="display:none;margin-bottom:24px;">
-            <canvas id="canvasA"></canvas>
-            <canvas id="canvasB"></canvas>
-            <canvas id="canvasDiff"></canvas>
+            <canvas id="canvasA" aria-label="Image A"></canvas>
+            <canvas id="canvasB" aria-label="Image B"></canvas>
+            <canvas id="canvasDiff" aria-label="Pixel differences"></canvas>
         </div>
 
         <div class="result-wrap" id="resultWrap">
@@ -219,6 +219,9 @@
 
 <script src="/js/lib/diff_match_patch.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="/js/download.js"></script>
+<script src="/js/lib/html2canvas.min.js"></script>
+<script src="/js/download_as_image.js"></script>
 <script>
 const i18n={
     en:{
@@ -370,27 +373,36 @@ let currentLang='en',currentMode='text';
 let diffCache={base:'',new:''};
 let workbookA=null,workbookB=null;
 let imgA=null,imgB=null,blinkInterval=null;
+let diffTimer=null;
 const canvasA=document.getElementById('canvasA');
 const canvasB=document.getElementById('canvasB');
 const canvasDiff=document.getElementById('canvasDiff');
 const ctxA=canvasA.getContext('2d');
 const ctxB=canvasB.getContext('2d');
 const ctxDiff=canvasDiff.getContext('2d');
+const dmp=new diff_match_patch();
+
+function showError(msg){
+    const box=document.getElementById('errorBox');
+    box.textContent=msg;
+    box.classList.add('show');
+}
+function clearError(){document.getElementById('errorBox').classList.remove('show')}
+function scheduleDiff(){
+    if(diffTimer)clearTimeout(diffTimer);
+    diffTimer=setTimeout(diffUsingJS,250);
+}
 
 function diffUsingJS(){
-    const dmp=new diff_match_patch();
     let t1=document.getElementById('baseText').value;
     let t2=document.getElementById('newText').value;
     if(currentMode==='json'){
         try{
             t1=JSON.stringify(JSON.parse(t1),null,2);
             t2=JSON.stringify(JSON.parse(t2),null,2);
-            document.getElementById('baseText').value=t1;
-            document.getElementById('newText').value=t2;
-            document.getElementById('errorBox').classList.remove('show');
+            clearError();
         }catch(e){
-            document.getElementById('errorBox').textContent=i18n[currentLang].error;
-            document.getElementById('errorBox').classList.add('show');
+            showError(i18n[currentLang].error);
             return;
         }
     }
@@ -413,10 +425,9 @@ function formatJSON(id){
     const ta=document.getElementById(id);
     try{
         ta.value=JSON.stringify(JSON.parse(ta.value),null,2);
-        document.getElementById('errorBox').classList.remove('show');
+        clearError();
     }catch(e){
-        document.getElementById('errorBox').textContent=i18n[currentLang].error;
-        document.getElementById('errorBox').classList.add('show');
+        showError(i18n[currentLang].error);
     }
 }
 
@@ -448,69 +459,63 @@ function setLang(lang){
 function setMode(mode){
     currentMode=mode;
     window.currentMode=mode;
-    document.getElementById('modeToggle').querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
-    const l=i18n[currentLang];
-    document.getElementById('textJsonPanel').style.display=(mode==='text'||mode==='json')?'flex':'none';
-    document.getElementById('excelPanel').style.display=mode==='excel'?'block':'none';
-    document.getElementById('imagePanel').style.display=mode==='image'?'block':'none';
-    document.getElementById('canvasContainer').style.display=mode==='image'?'flex':'none';
-    const canvasWrap=document.getElementById('resultWrap');
-    canvasWrap.innerHTML='<div class="result-bar"><span id="resultLabel">'+l.diffResult+'</span><span id="resultStats"></span></div><div id="outputdiv" class="result"></div>';
+    document.getElementById('modeToggle').querySelectorAll('button').forEach(b=>{
+        const isActive=b.dataset.mode===mode;
+        b.classList.toggle('active',isActive);
+        b.setAttribute('aria-pressed',isActive?'true':'false');
+    });
+    const el=id=>document.getElementById(id);
+    el('btnFormatLeft').style.display='none';
+    el('btnFormatRight').style.display='none';
+    el('btnBlinkStart').style.display='none';
+    el('btnBlinkStop').style.display='none';
+    el('btnExample').style.display='none';
+    const l=i18n[currentLang]||i18n.en;
+    el('textJsonPanel').style.display=(mode==='text'||mode==='json')?'flex':'none';
+    el('excelPanel').style.display=mode==='excel'?'block':'none';
+    el('imagePanel').style.display=mode==='image'?'block':'none';
+    el('canvasContainer').style.display=mode==='image'?'flex':'none';
+    el('resultLabel').textContent=l.diffResult;
     if(mode==='json'){
-        document.getElementById('baseText').placeholder=l.placeholderLeft;
-        document.getElementById('newText').placeholder=l.placeholderRight;
-        document.getElementById('btnFormatLeft').style.display='inline-block';
-        document.getElementById('btnFormatRight').style.display='inline-block';
-        document.getElementById('btnCompare').onclick=()=>diffUsingJS();
-        document.getElementById('btnExample').onclick=loadJSONExample;
+        el('baseText').placeholder=l.placeholderLeft;
+        el('newText').placeholder=l.placeholderRight;
+        el('btnFormatLeft').style.display='inline-block';
+        el('btnFormatRight').style.display='inline-block';
+        el('btnExample').style.display='inline-block';
+        el('btnExample').onclick=loadJSONExample;
     }else if(mode==='text'){
-        document.getElementById('baseText').placeholder=l.placeholderLeft;
-        document.getElementById('newText').placeholder=l.placeholderRight;
-        document.getElementById('btnFormatLeft').style.display='none';
-        document.getElementById('btnFormatRight').style.display='none';
-        document.getElementById('btnBlinkStart').style.display='none';
-        document.getElementById('btnBlinkStop').style.display='none';
-        document.getElementById('btnCompare').onclick=diffUsingJS;
-        document.getElementById('btnExample').onclick=loadTextExample;
+        el('baseText').placeholder=l.placeholderLeft;
+        el('newText').placeholder=l.placeholderRight;
+        el('btnExample').style.display='inline-block';
+        el('btnExample').onclick=loadTextExample;
     }else if(mode==='excel'){
-        document.getElementById('btnFormatLeft').style.display='none';
-        document.getElementById('btnFormatRight').style.display='none';
-        document.getElementById('btnBlinkStart').style.display='none';
-        document.getElementById('btnBlinkStop').style.display='none';
-        document.getElementById('btnCompare').onclick=compareExcel;
-        document.getElementById('btnExample').onclick=loadJSONExample;
+        el('btnExample').style.display='none';
     }else if(mode==='image'){
-        document.getElementById('btnFormatLeft').style.display='none';
-        document.getElementById('btnFormatRight').style.display='none';
-        document.getElementById('btnBlinkStart').style.display='inline-block';
-        document.getElementById('btnBlinkStop').style.display='inline-block';
-        document.getElementById('btnCompare').onclick=generatePixelDiff;
-    }else{
-        document.getElementById('btnBlinkStart').style.display='none';
-        document.getElementById('btnBlinkStop').style.display='none';
+        el('btnBlinkStart').style.display='inline-block';
+        el('btnBlinkStop').style.display='inline-block';
     }
-    document.getElementById('errorBox').classList.remove('show');
+    clearError();
     if(mode==='text'||mode==='json'){
         diffCache={base:'',new:''};
-        document.getElementById('baseText').value='';
-        document.getElementById('newText').value='';
-        document.getElementById('outputdiv').innerHTML='';
+        el('baseText').value='';
+        el('newText').value='';
+        el('outputdiv').innerHTML='';
     }else if(mode==='excel'){
         workbookA=null;workbookB=null;
-        document.getElementById('fileAName').textContent='No file selected';
-        document.getElementById('fileBName').textContent='No file selected';
-        document.getElementById('outputdiv').innerHTML='';
+        el('fileAName').textContent='No file selected';
+        el('fileBName').textContent='No file selected';
+        el('outputdiv').innerHTML='';
     }else if(mode==='image'){
         imgA=null;imgB=null;
         if(blinkInterval){clearInterval(blinkInterval);blinkInterval=null}
-        document.getElementById('imgAName').textContent='No file selected';
-        document.getElementById('imgBName').textContent='No file selected';
+        el('imgAName').textContent='No file selected';
+        el('imgBName').textContent='No file selected';
         ctxA.clearRect(0,0,canvasA.width,canvasA.height);
         ctxB.clearRect(0,0,canvasB.width,canvasB.height);
         ctxDiff.clearRect(0,0,canvasDiff.width,canvasDiff.height);
-        document.getElementById('outputdiv').innerHTML='';
+        el('outputdiv').innerHTML='';
     }
-    document.getElementById('resultStats').innerHTML='';
+    el('resultStats').innerHTML='';
 }
 
 document.getElementById('fileA').addEventListener('change',function(){
@@ -539,11 +544,12 @@ document.getElementById('fileB').addEventListener('change',function(){
 function compareExcel(){
     const l=i18n[currentLang];
     if(!workbookA||!workbookB){
-        alert(l.selectBoth);return;
+        showError(l.selectBoth);return;
     }
     const resultDiv=document.getElementById('outputdiv');
     resultDiv.innerHTML='';
-    const sheetNames=workbookA.SheetNames.filter(name=>workbookB.SheetNames.includes(name));
+    const sheetsB=new Set(workbookB.SheetNames);
+    const sheetNames=workbookA.SheetNames.filter(name=>sheetsB.has(name));
     if(sheetNames.length===0){
         resultDiv.innerHTML='<p style="color:#6b7280;padding:16px;">No matching sheets found.</p>';
         return;
@@ -558,7 +564,9 @@ function compareExcel(){
         const sheetA=XLSX.utils.sheet_to_json(workbookA.Sheets[sheetName],{header:1});
         const sheetB=XLSX.utils.sheet_to_json(workbookB.Sheets[sheetName],{header:1});
         const maxRows=Math.max(sheetA.length,sheetB.length);
-        const maxCols=Math.max(...sheetA.map(r=>r.length),...sheetB.map(r=>r.length));
+        let maxCols=0;
+        for(const r of sheetA)if(r.length>maxCols)maxCols=r.length;
+        for(const r of sheetB)if(r.length>maxCols)maxCols=r.length;
         for(let i=0;i<maxRows;i++){
             const tr=document.createElement('tr');
             for(let j=0;j<maxCols;j++){
@@ -566,7 +574,7 @@ function compareExcel(){
                 const valA=sheetA[i]&&sheetA[i][j]!==undefined?sheetA[i][j]:'';
                 const valB=sheetB[i]&&sheetB[i][j]!==undefined?sheetB[i][j]:'';
                 td.textContent=valB;
-                if(valA!=valB)td.classList.add('diff-cell');
+                if(String(valA)!==String(valB))td.classList.add('diff-cell');
                 tr.appendChild(td);
             }
             table.appendChild(tr);
@@ -602,10 +610,11 @@ function readImage(inputId,canvasId,nameSpanId){
 function generatePixelDiff(){
     const l=i18n[currentLang];
     if(!imgA||!imgB){
-        alert(l.selectBoth);return;
+        showError(l.selectBoth);return;
     }
     const width=Math.min(imgA.width,imgB.width);
     const height=Math.min(imgA.height,imgB.height);
+    const sizeMismatch=imgA.width!==imgB.width||imgA.height!==imgB.height;
     canvasDiff.width=width;canvasDiff.height=height;
     ctxDiff.clearRect(0,0,width,height);
     ctxA.clearRect(0,0,canvasA.width,canvasA.height);
@@ -615,24 +624,30 @@ function generatePixelDiff(){
     const dataA=ctxA.getImageData(0,0,width,height);
     const dataB=ctxB.getImageData(0,0,width,height);
     const diffData=ctxDiff.createImageData(width,height);
-    for(let i=0;i<dataA.data.length;i+=4){
-        const rDiff=Math.abs(dataA.data[i]-dataB.data[i]);
-        const gDiff=Math.abs(dataA.data[i+1]-dataB.data[i+1]);
-        const bDiff=Math.abs(dataA.data[i+2]-dataB.data[i+2]);
+    const aData=dataA.data,bData=dataB.data,outData=diffData.data;
+    for(let i=0;i<aData.length;i+=4){
+        const rDiff=Math.abs(aData[i]-bData[i]);
+        const gDiff=Math.abs(aData[i+1]-bData[i+1]);
+        const bDiff=Math.abs(aData[i+2]-bData[i+2]);
         const diff=rDiff+gDiff+bDiff;
         if(diff>30){
-            diffData.data[i]=255;diffData.data[i+1]=0;diffData.data[i+2]=0;diffData.data[i+3]=200;
+            outData[i]=255;outData[i+1]=0;outData[i+2]=0;outData[i+3]=200;
         }else{
-            diffData.data[i+3]=0;
+            outData[i+3]=0;
         }
     }
     ctxDiff.putImageData(diffData,0,0);
+    if(sizeMismatch){
+        document.getElementById('outputdiv').innerHTML=
+            '<div style="color:#b45309;padding:8px 12px;background:#fef3c7;border-radius:6px;font-size:13px;">'+
+            'Images have different dimensions (A: '+imgA.width+'\u00d7'+imgA.height+', B: '+imgB.width+'\u00d7'+imgB.height+'). Only the overlapping region is compared.</div>';
+    }
 }
 
 function startBlink(){
     const l=i18n[currentLang];
     if(!imgA||!imgB){
-        alert(l.selectBoth);return;
+        showError(l.selectBoth);return;
     }
     stopBlink();
     const width=Math.min(imgA.width,imgB.width);
@@ -654,6 +669,8 @@ function loadJSONExample(){
     const jsonB=`{"name":"Alice","age":26,"city":"New York","skills":["JavaScript","Python","Go"]}`;
     document.getElementById('baseText').value=jsonA;
     document.getElementById('newText').value=jsonB;
+    formatJSON('baseText');
+    formatJSON('newText');
     diffUsingJS();
 }
 function loadTextExample(){
@@ -683,8 +700,26 @@ document.getElementById('modeToggle').addEventListener('click',e=>{
 document.getElementById('btnCompare').addEventListener('click',()=>{
     if(currentMode==='excel')compareExcel();
     else if(currentMode==='image')generatePixelDiff();
-    else diffUsingJS();
+    else{
+        if(currentMode==='json'){
+            formatJSON('baseText');
+            formatJSON('newText');
+        }
+        diffUsingJS();
+    }
 });
+document.getElementById('btnFormatLeft').addEventListener('click',()=>{
+    formatJSON('baseText');
+    scheduleDiff();
+});
+document.getElementById('btnFormatRight').addEventListener('click',()=>{
+    formatJSON('newText');
+    scheduleDiff();
+});
+document.getElementById('btnExportHTML').addEventListener('click',downloadHTML);
+document.getElementById('btnExportImage').addEventListener('click',downloadImage);
+document.getElementById('baseText').addEventListener('input',scheduleDiff);
+document.getElementById('newText').addEventListener('input',scheduleDiff);
 document.getElementById('btnBlinkStart').addEventListener('click',startBlink);
 document.getElementById('btnBlinkStop').addEventListener('click',stopBlink);
 
@@ -698,9 +733,6 @@ document.getElementById('btnBlinkStop').addEventListener('click',stopBlink);
     setLang(currentLang);
 })();
 </script>
-<script src="/js/download.js"></script>
-<script src="/js/lib/html2canvas.min.js"></script>
-<script src="/js/download_as_image.js"></script>
 
 </body>
 </html>

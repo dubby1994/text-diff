@@ -35,19 +35,47 @@ img { max-width: 100%; border: 1px solid #e2e4e8; border-radius: 8px; }
 </style>
 `;
 
+function triggerBlobDownload(blob, filename) {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+}
+
+function getImageCanvases() {
+    const canvasA = document.getElementById('canvasA');
+    const canvasB = document.getElementById('canvasB');
+    if (!canvasA.width || !canvasB.width) {
+        showError('No image comparison to export.');
+        return null;
+    }
+    return { canvasA, canvasB, canvasDiff: document.getElementById('canvasDiff') };
+}
+
+function populateExportWrapper() {
+    const baseText = document.getElementById("baseText").value;
+    const newText = document.getElementById("newText").value;
+    const resultHtml = document.getElementById("outputdiv").innerHTML;
+    if (!(baseText || newText || resultHtml.trim())) {
+        showError("No content to export.");
+        return false;
+    }
+    document.getElementById("exportBase").innerText = baseText;
+    document.getElementById("exportNew").innerText = newText;
+    document.getElementById("exportResult").innerHTML = resultHtml;
+    document.getElementById("exportTime").innerText = new Date().toLocaleString();
+    return true;
+}
+
 function downloadHTML() {
     const mode = window.currentMode || 'text';
     const timestamp = new Date().toLocaleString();
 
     if (mode === 'image') {
-        const canvasA = document.getElementById('canvasA');
-        const canvasB = document.getElementById('canvasB');
-        const canvasDiff = document.getElementById('canvasDiff');
-
-        if (!canvasA.width || !canvasB.width) {
-            alert('No image comparison to export.');
-            return;
-        }
+        const canvases = getImageCanvases();
+        if (!canvases) return;
+        const { canvasA, canvasB, canvasDiff } = canvases;
 
         const html = `
 <!DOCTYPE html>
@@ -86,30 +114,14 @@ function downloadHTML() {
 </html>`;
 
         const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = "image-compare-result.html";
-        link.click();
-        URL.revokeObjectURL(link.href);
+        triggerBlobDownload(blob, "image-compare-result.html");
         return;
     }
 
-    const baseText = document.getElementById("baseText").value;
-    const newText = document.getElementById("newText").value;
-    const resultHtml = document.getElementById("outputdiv").innerHTML;
-
-    const hasContent = (baseText || newText || resultHtml.trim());
-    if (!hasContent) {
-        alert("No content to export.");
-        return;
-    }
-
-    document.getElementById("exportBase").innerText = baseText;
-    document.getElementById("exportNew").innerText = newText;
-    document.getElementById("exportResult").innerHTML = resultHtml;
-    document.getElementById("exportTime").innerText = timestamp;
+    if (!populateExportWrapper()) return;
 
     const wrapper = document.getElementById("exportWrapper");
+    const savedStyle = wrapper.style.cssText;
     wrapper.style.cssText = "";
 
     const htmlContent = `
@@ -125,10 +137,8 @@ ${wrapper.outerHTML}
 </body>
 </html>`.trim();
 
+    wrapper.style.cssText = savedStyle;
+
     const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = "text-compare-result.html";
-    link.click();
-    URL.revokeObjectURL(link.href);
+    triggerBlobDownload(blob, "text-compare-result.html");
 }
