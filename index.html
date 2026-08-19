@@ -1,738 +1,1055 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>TextDiff – Compare Text, JSON, Excel & Images</title>
-    <meta name="description" content="Free online text, JSON, Excel and image comparison tool. Compare differences instantly. Works entirely in your browser." />
-    <meta name="keywords" content="text compare, json diff, excel compare, image diff, diff tool" />
+<title>Text Diff - Common Tool</title>
+<meta name="description" content="Compare two texts instantly with inline, side-by-side, and unified diff views. Fast, private, in-browser text comparison powered by Google's diff-match-patch." />
+<meta name="keywords" content="text diff, compare text, diff tool, text comparison, inline diff, side by side diff, unified diff, diff-match-patch" />
+<meta name="author" content="Text Diff - Common Tool" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0a0b0d" media="(prefers-color-scheme: dark)" />
+<link rel="canonical" href="https://verso.diff/" />
 
-    <meta property="og:title" content="TextDiff – Compare Text, JSON, Excel & Images" />
-    <meta property="og:description" content="Compare text, JSON, Excel files and images instantly. Works entirely in your browser." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://textcompare.top/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Text Diff - Common Tool" />
+<meta property="og:description" content="Compare two texts instantly with inline, side-by-side, and unified diff views. Runs entirely in your browser." />
+<meta property="og:image" content="og-image.svg" />
+<meta property="og:url" content="https://verso.diff/" />
+<meta property="og:site_name" content="Text Diff - Common Tool" />
 
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDM2IDM2Ij4KICA8cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI4IiBmaWxsPSIjMWExYTJlIi8+CiAgPHRleHQgeD0iMTgiIHk9IjI1IiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjE1IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Jmx0Oy8mZ3Q7PC90ZXh0Pgo8L3N2Zz4=" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Text Diff - Common Tool" />
+<meta name="twitter:description" content="Compare two texts instantly with inline, side-by-side, and unified diff views. Runs entirely in your browser." />
+<meta name="twitter:image" content="og-image.svg" />
 
-    <style>
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Hiragino Sans GB",Roboto,"PingFang SC",Arial,sans-serif;background:#f8f9fc;color:#1a1a2e;line-height:1.6}
-        .page{max-width:1200px;margin:0 auto;padding:24px 20px;min-height:100vh}
-        header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px}
-        .logo{display:flex;align-items:center;gap:10px}
-        .logo-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#1a1a2e,#2d2d44);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
-        .logo-text{font-size:22px;font-weight:700;letter-spacing:-0.5px;color:#1a1a2e}
-        .controls{display:flex;gap:8px;align-items:center}
-        .mode-toggle{display:flex;background:#fff;border-radius:10px;padding:3px;border:1px solid #e2e4e8;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
-        .mode-toggle button{border:none;padding:7px 14px;font-size:13px;font-weight:600;border-radius:8px;cursor:pointer;transition:all .2s;color:#6b7280;background:transparent}
-        .mode-toggle button.active{background:#1a1a2e;color:#fff;box-shadow:0 2px 8px rgba(26,26,46,.2)}
-        .mode-toggle button:hover:not(.active){background:#f3f4f6}
-        .lang-select{background:#fff;border:1px solid #e2e4e8;border-radius:8px;padding:7px 12px;font-size:13px;color:#4b5563;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:32px;min-width:100px}
-        .lang-select:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
-        .editor{display:flex;gap:16px;margin-bottom:24px}
-        .editor-col{flex:1;display:flex;flex-direction:column;gap:8px}
-        .editor-col label{font-size:13px;font-weight:600;color:#4b5563}
-        .editor-col textarea{width:100%;min-height:220px;padding:14px;font-size:14px;font-family:"SF Mono","Fira Code","Cascadia Code","Noto Sans Mono",Consolas,monospace;border:1px solid #e2e4e8;border-radius:10px;resize:vertical;background:#fff;transition:border-color .2s;color:#1a1a2e;line-height:1.7}
-        .editor-col textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.12)}
-        .editor-col textarea::placeholder{color:#9ca3af}
-        .upload-card{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
-        .upload-section{flex:1;min-width:200px;background:#fff;padding:16px;border-radius:10px;border:1px solid #e2e4e8;display:flex;flex-direction:column;gap:8px}
-        .upload-section label{font-weight:600;margin-bottom:0;color:#4b5563}
-        .file-btn{background:#1a1a2e;color:#fff;border:none;padding:8px 16px;font-size:14px;font-weight:600;border-radius:8px;cursor:pointer;transition:all .2s}
-        .file-btn:hover{background:#2d2d44}
-        .file-name{color:#6b7280;font-size:12px;margin-left:8px}
-        .canvas-container{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:24px}
-        canvas{border:1px solid #e2e4e8;border-radius:10px;max-width:100%}
-        canvas#canvasDiff{border:1px solid #dc2626}
-        .actions{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
-        .btn{padding:9px 20px;font-size:14px;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
-        .btn-primary{background:#1a1a2e;color:#fff}
-        .btn-primary:hover{background:#2d2d44;transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,26,46,.2)}
-        .btn-secondary{background:#fff;color:#4b5563;border:1px solid #e2e4e8}
-        .btn-secondary:hover{background:#f9fafb;border-color:#d1d5db}
-        .error{color:#dc2626;font-size:13px;margin-bottom:8px;display:none}
-        .error.show{display:block}
-        .result-wrap{background:#fff;border-radius:12px;border:1px solid #e2e4e8;overflow:hidden;margin-bottom:24px}
-        .result-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#f8f9fc;border-bottom:1px solid #e2e4e8;font-size:13px;color:#6b7280}
-        .result-bar .stat span{font-weight:600;color:#1a1a2e}
-        #outputdiv{white-space:pre-wrap;font-family:"SF Mono","Fira Code",Consolas,monospace;font-size:13px;line-height:1.8;max-height:500px;overflow-y:auto;padding:16px}
-        #outputdiv,.diff-table-container{width:100%;overflow:auto}
-        .diff-table-container table{border-collapse:collapse;width:100%;font-size:13px}
-        .diff-table-container td,.diff-table-container th{border:1px solid #e2e4e8;padding:6px 10px}
-        .diff-table-container .diff-cell{background:#fee2e2;color:#991b1b}
-        .diff-table-container caption{font-weight:600;margin-bottom:8px;color:#1a1a2e}
-        .diff-table-container{margin-top:8px}
-        .added{background:#dcfce7;color:#166534}
-        .removed{background:#fee2e2;color:#991b1b;text-decoration:line-through}
-        footer{text-align:center;padding:32px 0 16px;font-size:13px;color:#9ca3af}
-        footer a{color:#3b82f6;text-decoration:none}
-        footer a:hover{text-decoration:underline}
-        .mode-hint{text-align:center;font-size:13px;color:#6b7280;margin-bottom:16px}
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0b0d'/%3E%3Crect x='7' y='8' width='6.5' height='16' rx='1.6' fill='%234f7cf5'/%3E%3Crect x='18.5' y='8' width='6.5' height='16' rx='1.6' fill='none' stroke='%234f7cf5' stroke-width='1.6'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0b0d'/%3E%3Crect x='7' y='8' width='6.5' height='16' rx='1.6' fill='%234f7cf5'/%3E%3Crect x='18.5' y='8' width='6.5' height='16' rx='1.6' fill='none' stroke='%234f7cf5' stroke-width='1.6'/%3E%3C/svg%3E" />
+<link rel="mask-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='7' y='8' width='6.5' height='16' rx='1.6' fill='black'/%3E%3Crect x='18.5' y='8' width='6.5' height='16' rx='1.6' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E" color="#0a0b0d" />
 
-        @media(max-width:768px){
-            .page{padding:16px 12px}
-            header{flex-direction:column;align-items:flex-start}
-            .controls{width:100%;flex-wrap:wrap}
-            .mode-toggle{flex:1}
-            .editor{flex-direction:column}
-            .actions{flex-wrap:wrap}
-            .upload-card{flex-direction:column}
-            .upload-section{min-width:unset}
-            .canvas-container{flex-direction:column}
-        }
-    </style>
-</head>
+<link rel="stylesheet" href="fonts/fonts.css" />
+<script src="vendor/diff-match-patch.js"></script>
 
-<body>
-
-<div class="page">
-    <header>
-        <div class="logo">
-            <div class="logo-icon">&lt;/&gt;</div>
-            <span class="logo-text">TextDiff</span>
-        </div>
-        <div class="controls">
-            <div class="mode-toggle" id="modeToggle" role="group" aria-label="Mode">
-                <button class="active" data-mode="text" aria-pressed="true">Text</button>
-                <button data-mode="json" aria-pressed="false">JSON</button>
-                <button data-mode="excel" aria-pressed="false">Excel</button>
-                <button data-mode="image" aria-pressed="false">Image</button>
-            </div>
-            <select class="lang-select" id="langSelect" aria-label="Language">
-                <option value="en">English</option>
-                <option value="zh">中文</option>
-                <option value="zh-Hant">繁體中文</option>
-                <option value="ja">日本語</option>
-                <option value="ko">한국어</option>
-                <option value="vi">Tiếng Việt</option>
-                <option value="id">Bahasa</option>
-                <option value="ru">Русский</option>
-                <option value="es">Español</option>
-                <option value="de">Deutsch</option>
-                <option value="ms">Bahasa Melayu</option>
-            </select>
-        </div>
-    </header>
-
-    <main>
-
-        <div id="textJsonPanel" class="editor">
-            <div class="editor-col">
-                <label id="labelLeft">Original</label>
-                <textarea id="baseText" placeholder="Paste original text here..."></textarea>
-            </div>
-            <div class="editor-col">
-                <label id="labelRight">Modified</label>
-                <textarea id="newText" placeholder="Paste modified text here..."></textarea>
-            </div>
-        </div>
-
-        <div id="excelPanel" style="display:none;">
-            <div class="mode-hint" id="excelHint">Select two Excel files and click Compare</div>
-            <div class="upload-card">
-                <div class="upload-section">
-                    <label>Excel File A</label>
-                    <input type="file" id="fileA" accept=".xlsx,.xls" style="display:none" />
-                    <button class="file-btn" onclick="document.getElementById('fileA').click()">Select File A</button>
-                    <span id="fileAName" class="file-name">No file selected</span>
-                </div>
-                <div class="upload-section">
-                    <label>Excel File B</label>
-                    <input type="file" id="fileB" accept=".xlsx,.xls" style="display:none" />
-                    <button class="file-btn" onclick="document.getElementById('fileB').click()">Select File B</button>
-                    <span id="fileBName" class="file-name">No file selected</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="imagePanel" style="display:none;">
-            <div class="mode-hint" id="imageHint">Upload two images to compare</div>
-            <div class="upload-card">
-                <div class="upload-section">
-                    <label>Image A</label>
-                    <input type="file" id="imgA" accept="image/*" style="display:none" onchange="readImage('imgA','canvasA','imgAName')" />
-                    <button class="file-btn" onclick="document.getElementById('imgA').click()">Select Image A</button>
-                    <span id="imgAName" class="file-name">No file selected</span>
-                </div>
-                <div class="upload-section">
-                    <label>Image B</label>
-                    <input type="file" id="imgB" accept="image/*" style="display:none" onchange="readImage('imgB','canvasB','imgBName')" />
-                    <button class="file-btn" onclick="document.getElementById('imgB').click()">Select Image B</button>
-                    <span id="imgBName" class="file-name">No file selected</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="errorBox" class="error" role="alert"></div>
-
-        <div class="actions" id="actionsBar">
-            <button class="btn btn-secondary" id="btnFormatLeft">Format Left</button>
-            <button class="btn btn-secondary" id="btnFormatRight">Format Right</button>
-            <button class="btn btn-primary" id="btnCompare">Compare</button>
-            <button class="btn btn-secondary" id="btnExample">Load Example</button>
-            <button class="btn btn-secondary" id="btnBlinkStart" style="display:none;">Start Blink</button>
-            <button class="btn btn-secondary" id="btnBlinkStop" style="display:none;">Stop Blink</button>
-            <button class="btn btn-secondary" id="btnExportHTML">Export HTML</button>
-            <button class="btn btn-secondary" id="btnExportImage">Export Image</button>
-        </div>
-
-        <div class="canvas-container" id="canvasContainer" style="display:none;margin-bottom:24px;">
-            <canvas id="canvasA" aria-label="Image A"></canvas>
-            <canvas id="canvasB" aria-label="Image B"></canvas>
-            <canvas id="canvasDiff" aria-label="Pixel differences"></canvas>
-        </div>
-
-        <div class="result-wrap" id="resultWrap">
-            <div class="result-bar">
-                <span id="resultLabel">Diff Result</span>
-                <span id="resultStats"></span>
-            </div>
-            <div id="outputdiv" class="result"></div>
-        </div>
-
-    </main>
-
-<footer id="footerText">
-        TextDiff · All comparisons run locally in your browser · No data is sent to any server
-    </footer>
-</div>
-
-<div id="exportWrapper" style="position: fixed; left: -9999px; top: 0; width: 1200px; background: #fff; padding: 24px; font-family: Consolas, Monaco, monospace;">
-    <h1 style="margin:0 0 8px;font-size:24px;">Text Compare Result</h1>
-    <div style="color:#666;font-size:14px;margin-bottom:20px;">Generated by https://textcompare.top &middot; <span id="exportTime"></span></div>
-    <div style="display:flex;gap:16px;">
-        <div style="flex:1;">
-            <h3 style="margin:0 0 8px;font-size:14px;color:#333;">Original</h3>
-            <pre id="exportBase" style="background:#f9fafb;border:1px solid #e5e7eb;padding:12px;white-space:pre-wrap;margin:0;"></pre>
-        </div>
-        <div style="flex:1;">
-            <h3 style="margin:0 0 8px;font-size:14px;color:#333;">Modified</h3>
-            <pre id="exportNew" style="background:#f9fafb;border:1px solid #e5e7eb;padding:12px;white-space:pre-wrap;margin:0;"></pre>
-        </div>
-    </div>
-    <div style="margin-top:20px;">
-        <h3 style="margin:0 0 8px;font-size:14px;color:#333;">Differences</h3>
-        <div id="exportResult" style="border:1px solid #e5e7eb;padding:12px;white-space:pre-wrap;"></div>
-    </div>
-</div>
-
-<script src="/js/lib/diff_match_patch.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="/js/download.js"></script>
-<script src="/js/lib/html2canvas.min.js"></script>
-<script src="/js/download_as_image.js"></script>
-<script>
-const i18n={
-    en:{
-        original:"Original",modified:"Modified",
-        placeholderLeft:"Paste original text here...",placeholderRight:"Paste modified text here...",
-        formatLeft:"Format Left",formatRight:"Format Right",compare:"Compare",example:"Load Example",
-        diffResult:"Diff Result",added:"added",removed:"removed",error:"Invalid JSON format",
-        footer:"TextDiff · All comparisons run locally in your browser · No data is sent to any server",
-        labelText:"Text",labelJson:"JSON",labelExcel:"Excel",labelImage:"Image",
-        excelHint:"Select two Excel files and click Compare",
-        imageHint:"Upload two images to compare",
-        pixelDiff:"Generate Pixel Diff",startBlink:"Start Blink",stopBlink:"Stop Blink",
-        selectBoth:"Please select both files",
-        exportHTML:"Export HTML",exportImage:"Export Image"
-    },
-    zh:{
-        original:"原始文本",modified:"修改后文本",
-        placeholderLeft:"在此粘贴原始文本...",placeholderRight:"在此粘贴修改后文本...",
-        formatLeft:"格式化左侧",formatRight:"格式化右侧",compare:"对比",example:"加载示例",
-        diffResult:"差异结果",added:"新增",removed:"删除",error:"JSON格式无效",
-        footer:"TextDiff · 所有对比均在浏览器本地完成 · 数据不会上传到服务器",
-        labelText:"文本",labelJson:"JSON",labelExcel:"Excel",labelImage:"图片",
-        excelHint:"选择两个Excel文件并点击对比",
-        imageHint:"上传两张图片进行比较",
-        pixelDiff:"生成像素差",startBlink:"开始闪烁",stopBlink:"停止闪烁",
-        selectBoth:"请选择两个文件",
-        exportHTML:"导出HTML",exportImage:"导出图片"
-    },
-    "zh-Hant":{
-        original:"原始文本",modified:"修改後文本",
-        placeholderLeft:"在此貼上原始文本...",placeholderRight:"在此貼上修改後文本...",
-        formatLeft:"格式化左側",formatRight:"格式化右側",compare:"對比",example:"加載示例",
-        diffResult:"差異結果",added:"新增",removed:"刪除",error:"JSON格式無效",
-        footer:"TextDiff · 所有對比均在瀏覽器本地完成 · 數據不會上傳到伺服器",
-        labelText:"文本",labelJson:"JSON",labelExcel:"Excel",labelImage:"圖片",
-        excelHint:"選擇兩個Excel文件並點擊對比",
-        imageHint:"上傳兩張圖片進行比較",
-        pixelDiff:"生成像素差",startBlink:"開始閃爍",stopBlink:"停止閃爍",
-        selectBoth:"請選擇兩個文件",
-        exportHTML:"匯出HTML",exportImage:"匯出圖片"
-    },
-    ja:{
-        original:"元のテキスト",modified:"変更後のテキスト",
-        placeholderLeft:"元のテキストをここに貼り付けてください...",placeholderRight:"変更後のテキストをここに貼り付けてください...",
-        formatLeft:"左を整形",formatRight:"右を整形",compare:"比較",example:"サンプルを読み込み",
-        diffResult:"差分結果",added:"追加",removed:"削除",error:"無効なJSON形式",
-        footer:"TextDiff · すべての比較はブラウザ上で実行されます · データはサーバーに送信されません",
-        labelText:"テキスト",labelJson:"JSON",labelExcel:"Excel",labelImage:"画像",
-        excelHint:"2つのExcelファイルを選択して比較",
-        imageHint:"2つの画像をアップロードして比較",
-        pixelDiff:"ピクセル差分を生成",startBlink:"点滅開始",stopBlink:"点滅停止",
-        selectBoth:"2つのファイルを選択してください",
-        exportHTML:"HTMLエクスポート",exportImage:"画像エクスポート"
-    },
-    ko:{
-        original:"원본 텍스트",modified:"수정된 텍스트",
-        placeholderLeft:"원본 텍스트를 붙여넣으세요...",placeholderRight:"수정된 텍스트를 붙여넣으세요...",
-        formatLeft:"왼쪽 서식",formatRight:"오른쪽 서식",compare:"비교",example:"예제 로드",
-        diffResult:"차이 결과",added:"추가",removed:"삭제",error:"잘못된 JSON 형식",
-        footer:"TextDiff · 모든 비교는 브라우저에서 로컬로 실행됩니다 · 데이터는 서버로 전송되지 않습니다",
-        labelText:"텍스트",labelJson:"JSON",labelExcel:"Excel",labelImage:"이미지",
-        excelHint:"두 개의 Excel 파일을 선택하고 비교를 클릭하세요",
-        imageHint:"두 이미지를 업로드하여 비교",
-        pixelDiff:"픽셀 차이 생성",startBlink:"깜빡이기 시작",stopBlink:"깜빡이기 중지",
-        selectBoth:"두 파일을 모두 선택하세요",
-        exportHTML:"HTML 내보내기",exportImage:"이미지 내보내기"
-    },
-    vi:{
-        original:"Văn bản gốc",modified:"Văn bản đã sửa",
-        placeholderLeft:"Dán văn bản gốc vào đây...",placeholderRight:"Dán văn bản đã sửa vào đây...",
-        formatLeft:"Định dạng bên trái",formatRight:"Định dạng bên phải",compare:"So sánh",example:"Tải ví dụ",
-        diffResult:"Kết quả chênh lệch",added:"thêm",removed:"xóa",error:"Định dạng JSON không hợp lệ",
-        footer:"TextDiff · Tất cả so sánh chạy cục bộ trên trình duyệt · Không có dữ liệu nào được gửi đến máy chủ",
-        labelText:"Văn bản",labelJson:"JSON",labelExcel:"Excel",labelImage:"Hình ảnh",
-        excelHint:"Chọn hai tệp Excel và nhấn So sánh",
-        imageHint:"Tải lên hai hình ảnh để so sánh",
-        pixelDiff:"Tạo khác biệt pixel",startBlink:"Bắt đầu nhấp nháy",stopBlink:"Dừng nhấp nháy",
-        selectBoth:"Vui lòng chọn cả hai tệp",
-        exportHTML:"Xuất HTML",exportImage:"Xuất ảnh"
-    },
-    id:{
-        original:"Teks Asli",modified:"Teks Dimodifikasi",
-        placeholderLeft:"Tempelkan teks asli di sini...",placeholderRight:"Tempelkan teks dimodifikasi di sini...",
-        formatLeft:"Format Kiri",formatRight:"Format Kanan",compare:"Bandingkan",example:"Contoh",
-        diffResult:"Hasil Perbandingan",added:"tambah",removed:"hapus",error:"Format JSON tidak valid",
-        footer:"TextDiff · Semua perbandingan berjalan secara lokal di browser · Tidak ada data yang dikirim ke server",
-        labelText:"Teks",labelJson:"JSON",labelExcel:"Excel",labelImage:"Gambar",
-        excelHint:"Pilih dua file Excel dan klik Bandingkan",
-        imageHint:"Unggah dua gambar untuk dibandingkan",
-        pixelDiff:"Buat Perbedaan Pixel",startBlink:"Mulai Berkedip",stopBlink:"Hentikan Berkedip",
-        selectBoth:"Silakan pilih kedua file",
-        exportHTML:"Ekspor HTML",exportImage:"Ekspor Gambar"
-    },
-    ru:{
-        original:"Исходный текст",modified:"Измененный текст",
-        placeholderLeft:"Вставьте исходный текст здесь...",placeholderRight:"Вставьте измененный текст здесь...",
-        formatLeft:"Форматировать слева",formatRight:"Форматировать справа",compare:"Сравнить",example:"Пример",
-        diffResult:"Результат сравнения",added:"добавлено",removed:"удалено",error:"Неверный формат JSON",
-        footer:"TextDiff · Все сравнения выполняются локально в браузере · Данные не отправляются на сервер",
-        labelText:"Текст",labelJson:"JSON",labelExcel:"Excel",labelImage:"Изображение",
-        excelHint:"Выберите два файла Excel и нажмите Сравнить",
-        imageHint:"Загрузите два изображения для сравнения",
-        pixelDiff:"Пиксельное сравнение",startBlink:"Мигание",stopBlink:"Остановить мигание",
-        selectBoth:"Пожалуйста, выберите оба файла",
-        exportHTML:"Экспорт HTML",exportImage:"Экспорт изображения"
-    },
-    es:{
-        original:"Texto original",modified:"Texto modificado",
-        placeholderLeft:"Pega el texto original aquí...",placeholderRight:"Pega el texto modificado aquí...",
-        formatLeft:"Formatear izquierda",formatRight:"Formatear derecha",compare:"Comparar",example:"Ejemplo",
-        diffResult:"Resultado de la comparación",added:"añadido",removed:"eliminado",error:"Formato JSON no válido",
-        footer:"TextDiff · Todas las comparaciones se ejecutan localmente en el navegador · No se envían datos al servidor",
-        labelText:"Texto",labelJson:"JSON",labelExcel:"Excel",labelImage:"Imagen",
-        excelHint:"Selecciona dos archivos Excel y haz clic en Comparar",
-        imageHint:"Sube dos imágenes para comparar",
-        pixelDiff:"Diferencia de píxeles",startBlink:"Parpadear",stopBlink:"Detener parpadeo",
-        selectBoth:"Por favor selecciona ambos archivos",
-        exportHTML:"Exportar HTML",exportImage:"Exportar imagen"
-    },
-    de:{
-        original:"Originaltext",modified:"Geänderter Text",
-        placeholderLeft:"Originaltext hier einfügen...",placeholderRight:"Geänderten Text hier einfügen...",
-        formatLeft:"Links formatieren",formatRight:"Rechts formatieren",compare:"Vergleichen",example:"Beispiel",
-        diffResult:"Vergleichsergebnis",added:"hinzugefügt",removed:"entfernt",error:"Ungültiges JSON-Format",
-        footer:"TextDiff · Alle Vergleiche werden lokal im Browser ausgeführt · Es werden keine Daten an den Server gesendet",
-        labelText:"Text",labelJson:"JSON",labelExcel:"Excel",labelImage:"Bild",
-        excelHint:"Zwei Excel-Dateien auswählen und Vergleichen klicken",
-        imageHint:"Zwei Bilder zum Vergleichen hochladen",
-        pixelDiff:"Pixel-Differenz erzeugen",startBlink:"Blinken starten",stopBlink:"Blinken stoppen",
-        selectBoth:"Bitte beide Dateien auswählen",
-        exportHTML:"HTML exportieren",exportImage:"Bild exportieren"
-    },
-    ms:{
-        original:"Teks Asal",modified:"Teks Diubah",
-        placeholderLeft:"Tampal teks asal di sini...",placeholderRight:"Tampal teks diubah di sini...",
-        formatLeft:"Format Kiri",formatRight:"Format Kanan",compare:"Bandingkan",example:"Contoh",
-        diffResult:"Keputusan Perbezaan",added:"tambah",removed:"hapus",error:"Format JSON tidak sah",
-        footer:"TextDiff · Semua perbandingan dijalankan secara setempat dalam pelayar · Tiada data dihantar ke pelayan",
-        labelText:"Teks",labelJson:"JSON",labelExcel:"Excel",labelImage:"Imej",
-        excelHint:"Pilih dua fail Excel dan klik Bandingkan",
-        imageHint:"Muat naik dua imej untuk perbandingan",
-        pixelDiff:"Jana Bezakan Pixel",startBlink:"Mulai Kelip-kelip",stopBlink:"Hentikan Kelip-kelip",
-        selectBoth:"Sila pilih kedua-dua fail",
-        exportHTML:"Eksport HTML",exportImage:"Eksport imej"
-    }
-};
-
-let currentLang='en',currentMode='text';
-let diffCache={base:'',new:''};
-let workbookA=null,workbookB=null;
-let imgA=null,imgB=null,blinkInterval=null;
-let diffTimer=null;
-const canvasA=document.getElementById('canvasA');
-const canvasB=document.getElementById('canvasB');
-const canvasDiff=document.getElementById('canvasDiff');
-const ctxA=canvasA.getContext('2d');
-const ctxB=canvasB.getContext('2d');
-const ctxDiff=canvasDiff.getContext('2d');
-const dmp=new diff_match_patch();
-
-function showError(msg){
-    const box=document.getElementById('errorBox');
-    box.textContent=msg;
-    box.classList.add('show');
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Text Diff - Common Tool",
+  "description": "Compare two texts instantly with inline, side-by-side, and unified diff views. Fast, private, in-browser text comparison powered by Google's diff-match-patch.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://verso.diff/"
 }
-function clearError(){document.getElementById('errorBox').classList.remove('show')}
-function scheduleDiff(){
-    if(diffTimer)clearTimeout(diffTimer);
-    diffTimer=setTimeout(diffUsingJS,250);
-}
-
-function diffUsingJS(){
-    let t1=document.getElementById('baseText').value;
-    let t2=document.getElementById('newText').value;
-    if(currentMode==='json'){
-        try{
-            t1=JSON.stringify(JSON.parse(t1),null,2);
-            t2=JSON.stringify(JSON.parse(t2),null,2);
-            clearError();
-        }catch(e){
-            showError(i18n[currentLang].error);
-            return;
-        }
-    }
-    if(t1===diffCache.base&&t2===diffCache.new)return;
-    diffCache.base=t1;diffCache.new=t2;
-    const d=dmp.diff_main(t1,t2);
-    dmp.diff_cleanupSemantic(d);
-    const ds=dmp.diff_prettyHtml(d).replace(/&para;/g,'');
-    document.getElementById('outputdiv').innerHTML=ds;
-    updateStats(d);
-}
-
-function updateStats(d){
-    let a=0,r=0;
-    for(const op of d){if(op[0]===1)a++;if(op[0]===-1)r++}
-    document.getElementById('resultStats').textContent=(a||r)?`${i18n[currentLang].added} ${a} · ${i18n[currentLang].removed} ${r}`:'';
-}
-
-function formatJSON(id){
-    const ta=document.getElementById(id);
-    try{
-        ta.value=JSON.stringify(JSON.parse(ta.value),null,2);
-        clearError();
-    }catch(e){
-        showError(i18n[currentLang].error);
-    }
-}
-
-function setLang(lang){
-    currentLang=lang;
-    const l=i18n[lang];
-    document.getElementById('labelLeft').textContent=l.original;
-    document.getElementById('labelRight').textContent=l.modified;
-    document.getElementById('baseText').placeholder=l.placeholderLeft;
-    document.getElementById('newText').placeholder=l.placeholderRight;
-    document.getElementById('btnFormatLeft').textContent=l.formatLeft;
-    document.getElementById('btnFormatRight').textContent=l.formatRight;
-    document.getElementById('btnCompare').textContent=l.compare;
-    document.getElementById('btnExample').textContent=l.example;
-    document.getElementById('resultLabel').textContent=l.diffResult;
-    document.getElementById('resultStats').innerHTML='';
-    document.getElementById('errorBox').textContent=l.error;
-    document.getElementById('footerText').textContent=l.footer;
-    const modeToggle=document.getElementById('modeToggle');
-    const modeLabels={text:l.labelText,json:l.labelJson,excel:l.labelExcel,image:l.labelImage};
-    modeToggle.querySelectorAll('button').forEach(b=>b.textContent=modeLabels[b.dataset.mode]||b.dataset.mode);
-    document.getElementById('excelHint').textContent=l.excelHint;
-    document.getElementById('imageHint').textContent=l.imageHint;
-    document.getElementById('btnExportHTML').textContent=l.exportHTML;
-    document.getElementById('btnExportImage').textContent=l.exportImage;
-    document.querySelector('html').lang=lang==='zh-Hant'?'zh-Hant':lang;
-}
-
-function setMode(mode){
-    currentMode=mode;
-    window.currentMode=mode;
-    document.getElementById('modeToggle').querySelectorAll('button').forEach(b=>{
-        const isActive=b.dataset.mode===mode;
-        b.classList.toggle('active',isActive);
-        b.setAttribute('aria-pressed',isActive?'true':'false');
-    });
-    const el=id=>document.getElementById(id);
-    el('btnFormatLeft').style.display='none';
-    el('btnFormatRight').style.display='none';
-    el('btnBlinkStart').style.display='none';
-    el('btnBlinkStop').style.display='none';
-    el('btnExample').style.display='none';
-    const l=i18n[currentLang]||i18n.en;
-    el('textJsonPanel').style.display=(mode==='text'||mode==='json')?'flex':'none';
-    el('excelPanel').style.display=mode==='excel'?'block':'none';
-    el('imagePanel').style.display=mode==='image'?'block':'none';
-    el('canvasContainer').style.display=mode==='image'?'flex':'none';
-    el('resultLabel').textContent=l.diffResult;
-    if(mode==='json'){
-        el('baseText').placeholder=l.placeholderLeft;
-        el('newText').placeholder=l.placeholderRight;
-        el('btnFormatLeft').style.display='inline-block';
-        el('btnFormatRight').style.display='inline-block';
-        el('btnExample').style.display='inline-block';
-        el('btnExample').onclick=loadJSONExample;
-    }else if(mode==='text'){
-        el('baseText').placeholder=l.placeholderLeft;
-        el('newText').placeholder=l.placeholderRight;
-        el('btnExample').style.display='inline-block';
-        el('btnExample').onclick=loadTextExample;
-    }else if(mode==='excel'){
-        el('btnExample').style.display='none';
-    }else if(mode==='image'){
-        el('btnBlinkStart').style.display='inline-block';
-        el('btnBlinkStop').style.display='inline-block';
-    }
-    clearError();
-    if(mode==='text'||mode==='json'){
-        diffCache={base:'',new:''};
-        el('baseText').value='';
-        el('newText').value='';
-        el('outputdiv').innerHTML='';
-    }else if(mode==='excel'){
-        workbookA=null;workbookB=null;
-        el('fileAName').textContent='No file selected';
-        el('fileBName').textContent='No file selected';
-        el('outputdiv').innerHTML='';
-    }else if(mode==='image'){
-        imgA=null;imgB=null;
-        if(blinkInterval){clearInterval(blinkInterval);blinkInterval=null}
-        el('imgAName').textContent='No file selected';
-        el('imgBName').textContent='No file selected';
-        ctxA.clearRect(0,0,canvasA.width,canvasA.height);
-        ctxB.clearRect(0,0,canvasB.width,canvasB.height);
-        ctxDiff.clearRect(0,0,canvasDiff.width,canvasDiff.height);
-        el('outputdiv').innerHTML='';
-    }
-    el('resultStats').innerHTML='';
-}
-
-document.getElementById('fileA').addEventListener('change',function(){
-    if(this.files.length>0){
-        document.getElementById('fileAName').textContent=this.files[0].name;
-        const reader=new FileReader();
-        reader.onload=function(e){
-            const data=new Uint8Array(e.target.result);
-            workbookA=XLSX.read(data,{type:'array'});
-        };
-        reader.readAsArrayBuffer(this.files[0]);
-    }
-});
-document.getElementById('fileB').addEventListener('change',function(){
-    if(this.files.length>0){
-        document.getElementById('fileBName').textContent=this.files[0].name;
-        const reader=new FileReader();
-        reader.onload=function(e){
-            const data=new Uint8Array(e.target.result);
-            workbookB=XLSX.read(data,{type:'array'});
-        };
-        reader.readAsArrayBuffer(this.files[0]);
-    }
-});
-
-function compareExcel(){
-    const l=i18n[currentLang];
-    if(!workbookA||!workbookB){
-        showError(l.selectBoth);return;
-    }
-    const resultDiv=document.getElementById('outputdiv');
-    resultDiv.innerHTML='';
-    const sheetsB=new Set(workbookB.SheetNames);
-    const sheetNames=workbookA.SheetNames.filter(name=>sheetsB.has(name));
-    if(sheetNames.length===0){
-        resultDiv.innerHTML='<p style="color:#6b7280;padding:16px;">No matching sheets found.</p>';
-        return;
-    }
-    const container=document.createElement('div');
-    container.className='diff-table-container';
-    sheetNames.forEach(sheetName=>{
-        const table=document.createElement('table');
-        const caption=document.createElement('caption');
-        caption.textContent=l.diffResult+': '+sheetName;
-        table.appendChild(caption);
-        const sheetA=XLSX.utils.sheet_to_json(workbookA.Sheets[sheetName],{header:1});
-        const sheetB=XLSX.utils.sheet_to_json(workbookB.Sheets[sheetName],{header:1});
-        const maxRows=Math.max(sheetA.length,sheetB.length);
-        let maxCols=0;
-        for(const r of sheetA)if(r.length>maxCols)maxCols=r.length;
-        for(const r of sheetB)if(r.length>maxCols)maxCols=r.length;
-        for(let i=0;i<maxRows;i++){
-            const tr=document.createElement('tr');
-            for(let j=0;j<maxCols;j++){
-                const td=document.createElement('td');
-                const valA=sheetA[i]&&sheetA[i][j]!==undefined?sheetA[i][j]:'';
-                const valB=sheetB[i]&&sheetB[i][j]!==undefined?sheetB[i][j]:'';
-                td.textContent=valB;
-                if(String(valA)!==String(valB))td.classList.add('diff-cell');
-                tr.appendChild(td);
-            }
-            table.appendChild(tr);
-        }
-        container.appendChild(table);
-    });
-    resultDiv.appendChild(container);
-}
-
-function readImage(inputId,canvasId,nameSpanId){
-    const fileInput=document.getElementById(inputId);
-    const nameSpan=document.getElementById(nameSpanId);
-    if(fileInput.files.length===0)return;
-    const file=fileInput.files[0];
-    nameSpan.textContent=file.name;
-    const reader=new FileReader();
-    reader.onload=function(e){
-        const img=new Image();
-        img.onload=function(){
-            const canvas=document.getElementById(canvasId);
-            const ctx=canvas.getContext('2d');
-            canvas.width=img.width;
-            canvas.height=img.height;
-            ctx.drawImage(img,0,0);
-            if(inputId==='imgA')imgA=img;
-            if(inputId==='imgB')imgB=img;
-        };
-        img.src=e.target.result;
-    };
-    reader.readAsDataURL(file);
-}
-
-function generatePixelDiff(){
-    const l=i18n[currentLang];
-    if(!imgA||!imgB){
-        showError(l.selectBoth);return;
-    }
-    const width=Math.min(imgA.width,imgB.width);
-    const height=Math.min(imgA.height,imgB.height);
-    const sizeMismatch=imgA.width!==imgB.width||imgA.height!==imgB.height;
-    canvasDiff.width=width;canvasDiff.height=height;
-    ctxDiff.clearRect(0,0,width,height);
-    ctxA.clearRect(0,0,canvasA.width,canvasA.height);
-    ctxA.drawImage(imgA,0,0,width,height);
-    ctxB.clearRect(0,0,canvasB.width,canvasB.height);
-    ctxB.drawImage(imgB,0,0,width,height);
-    const dataA=ctxA.getImageData(0,0,width,height);
-    const dataB=ctxB.getImageData(0,0,width,height);
-    const diffData=ctxDiff.createImageData(width,height);
-    const aData=dataA.data,bData=dataB.data,outData=diffData.data;
-    for(let i=0;i<aData.length;i+=4){
-        const rDiff=Math.abs(aData[i]-bData[i]);
-        const gDiff=Math.abs(aData[i+1]-bData[i+1]);
-        const bDiff=Math.abs(aData[i+2]-bData[i+2]);
-        const diff=rDiff+gDiff+bDiff;
-        if(diff>30){
-            outData[i]=255;outData[i+1]=0;outData[i+2]=0;outData[i+3]=200;
-        }else{
-            outData[i+3]=0;
-        }
-    }
-    ctxDiff.putImageData(diffData,0,0);
-    if(sizeMismatch){
-        document.getElementById('outputdiv').innerHTML=
-            '<div style="color:#b45309;padding:8px 12px;background:#fef3c7;border-radius:6px;font-size:13px;">'+
-            'Images have different dimensions (A: '+imgA.width+'\u00d7'+imgA.height+', B: '+imgB.width+'\u00d7'+imgB.height+'). Only the overlapping region is compared.</div>';
-    }
-}
-
-function startBlink(){
-    const l=i18n[currentLang];
-    if(!imgA||!imgB){
-        showError(l.selectBoth);return;
-    }
-    stopBlink();
-    const width=Math.min(imgA.width,imgB.width);
-    const height=Math.min(imgA.height,imgB.height);
-    canvasDiff.width=width;canvasDiff.height=height;
-    let showA=true;
-    blinkInterval=setInterval(()=>{
-        ctxDiff.clearRect(0,0,width,height);
-        if(showA)ctxDiff.drawImage(imgA,0,0,width,height);
-        else ctxDiff.drawImage(imgB,0,0,width,height);
-        showA=!showA;
-    },500);
-}
-
-function stopBlink(){if(blinkInterval){clearInterval(blinkInterval);blinkInterval=null}}
-
-function loadJSONExample(){
-    const jsonA=`{"name":"Alice","age":25,"city":"New York","skills":["JavaScript","Python"]}`;
-    const jsonB=`{"name":"Alice","age":26,"city":"New York","skills":["JavaScript","Python","Go"]}`;
-    document.getElementById('baseText').value=jsonA;
-    document.getElementById('newText').value=jsonB;
-    formatJSON('baseText');
-    formatJSON('newText');
-    diffUsingJS();
-}
-function loadTextExample(){
-    const txtA=`Hello World!
-This is the original text.
-It contains several lines.
-We will compare this version.`;
-    const txtB=`Hello World!
-This is the modified text.
-It contains several lines.
-We will compare this version with some changes.`;
-    document.getElementById('baseText').value=txtA;
-    document.getElementById('newText').value=txtB;
-    diffUsingJS();
-}
-
-document.getElementById('langSelect').addEventListener('change',e=>{
-    localStorage.setItem('textdiff-lang',e.target.value);
-    setLang(e.target.value);
-});
-document.getElementById('modeToggle').addEventListener('click',e=>{
-    if(e.target.tagName==='BUTTON'){
-        localStorage.setItem('textdiff-mode',e.target.dataset.mode);
-        setMode(e.target.dataset.mode);
-    }
-});
-document.getElementById('btnCompare').addEventListener('click',()=>{
-    if(currentMode==='excel')compareExcel();
-    else if(currentMode==='image')generatePixelDiff();
-    else{
-        if(currentMode==='json'){
-            formatJSON('baseText');
-            formatJSON('newText');
-        }
-        diffUsingJS();
-    }
-});
-document.getElementById('btnFormatLeft').addEventListener('click',()=>{
-    formatJSON('baseText');
-    scheduleDiff();
-});
-document.getElementById('btnFormatRight').addEventListener('click',()=>{
-    formatJSON('newText');
-    scheduleDiff();
-});
-document.getElementById('btnExportHTML').addEventListener('click',downloadHTML);
-document.getElementById('btnExportImage').addEventListener('click',downloadImage);
-document.getElementById('baseText').addEventListener('input',scheduleDiff);
-document.getElementById('newText').addEventListener('input',scheduleDiff);
-document.getElementById('btnBlinkStart').addEventListener('click',startBlink);
-document.getElementById('btnBlinkStop').addEventListener('click',stopBlink);
-
-(function(){
-    const savedLang=localStorage.getItem('textdiff-lang');
-    const savedMode=localStorage.getItem('textdiff-mode');
-    if(savedLang)currentLang=savedLang;
-    if(savedMode)currentMode=savedMode;
-    document.getElementById('langSelect').value=currentLang;
-    setMode(currentMode);
-    setLang(currentLang);
-})();
 </script>
 
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-elev: #ffffff;
+  --bg-soft: #f7f8fa;
+  --ink: #0c0e14;
+  --ink-soft: #4b5364;
+  --muted: #8a93a6;
+  --line: #eceef3;
+  --line-strong: #e0e3eb;
+  --line-soft: #f3f4f8;
+  --accent: #2f6bff;
+  --accent-soft: #eef3ff;
+  --accent-press: #1f56e6;
+  --add-bg: #ecfdf3;
+  --add-text: #07935a;
+  --add-mark: #abefc6;
+  --del-bg: #fef0f2;
+  --del-text: #d23442;
+  --del-mark: #ffc6ca;
+  --seg-bg: #f3f4f8;
+  --shadow: 0 1px 2px rgba(12,14,20,.04), 0 4px 16px rgba(12,14,20,.06);
+  --shadow-sm: 0 1px 2px rgba(12,14,20,.05);
+  --radius: 14px;
+  --radius-sm: 9px;
+}
+html.dark {
+  --bg: #0a0b0d;
+  --bg-elev: #131419;
+  --bg-soft: #0f1014;
+  --ink: #f4f5f7;
+  --ink-soft: #b4bac6;
+  --muted: #71778a;
+  --line: #21232b;
+  --line-strong: #2a2d38;
+  --line-soft: #16171c;
+  --accent: #5b8cff;
+  --accent-soft: #182038;
+  --accent-press: #7da0ff;
+  --add-bg: #0f2818;
+  --add-text: #4ade80;
+  --add-mark: #1e4a2e;
+  --del-bg: #2a1416;
+  --del-text: #f87171;
+  --del-mark: #4a2226;
+  --seg-bg: #16171c;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.4);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  position: relative;
+}
+
+.wrap { max-width: 1400px; margin: 0 auto; padding: 0 32px; position: relative; }
+
+/* Header */
+.site-header { padding: 24px 0 0; }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand-mark { width: 30px; height: 30px; flex: none; }
+.brand-name { font-weight: 600; font-size: 19px; letter-spacing: -.02em; color: var(--ink); line-height: 1; }
+.brand-sub { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 3px; font-weight: 500; }
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 9px; border: 1px solid var(--line);
+  background: var(--bg-elev); color: var(--ink-soft); cursor: pointer; display: inline-flex;
+  align-items: center; justify-content: center; transition: .16s;
+}
+.icon-btn:hover { color: var(--ink); border-color: var(--line-strong); background: var(--bg-soft); }
+
+/* Intro */
+.intro { padding: 56px 0 32px; max-width: 820px; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.eyebrow::before { content: ""; width: 24px; height: 2px; background: var(--accent); display: inline-block; border-radius: 2px; }
+h1.title {
+  font-weight: 600; font-size: clamp(34px, 5.4vw, 50px);
+  line-height: 1.08; letter-spacing: -.03em; margin: 0 0 16px; color: var(--ink);
+}
+h1.title em { font-style: normal; font-weight: 500; color: var(--accent); }
+.intro p { font-size: 17px; color: var(--ink-soft); margin: 0; max-width: 640px; line-height: 1.6; }
+
+/* Tool */
+.tool { padding-bottom: 64px; }
+
+.input-card {
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.panes { display: grid; grid-template-columns: 1fr 1fr; position: relative; }
+.pane-field { padding: 16px 20px 16px; display: flex; flex-direction: column; min-width: 0; }
+.pane-field:first-child { border-right: 1px solid var(--line); }
+.pane-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+.pane-label { font-size: 14px; font-weight: 600; letter-spacing: -.01em; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.pane-label .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block; flex: none; }
+.pane-field.mod .pane-label .dot { background: transparent; box-shadow: inset 0 0 0 1.6px var(--accent); }
+.pane-count { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+textarea {
+  width: 100%; min-height: 180px; resize: vertical; border: 0; background: transparent;
+  color: var(--ink); font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7;
+  padding: 0; outline: none; resize: none; cursor: text;
+}
+textarea::placeholder { color: var(--muted); opacity: .7; }
+.swap-fab {
+  position: absolute; top: 18px; left: 50%; transform: translate(-50%, 0);
+  width: 34px; height: 34px; border-radius: 50%; background: var(--bg-elev);
+  border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: var(--ink-soft); transition: .2s; z-index: 2;
+}
+.swap-fab:hover { color: var(--accent); border-color: var(--accent); transform: translate(-50%, 0) rotate(180deg); }
+
+/* Results */
+.results { margin-top: 20px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.toolbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; background: var(--bg-soft); }
+.seg { display: inline-flex; background: var(--seg-bg); border-radius: 9px; padding: 3px; gap: 2px; }
+.seg button {
+  appearance: none; border: 0; background: transparent; color: var(--ink-soft);
+  font: inherit; font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: .15s;
+}
+.seg button:hover { color: var(--ink); }
+.seg button[aria-selected="true"] { background: var(--bg-elev); color: var(--ink); box-shadow: var(--shadow-sm); }
+.toolbar .spacer { flex: 1; }
+.options { display: flex; align-items: center; gap: 16px; }
+.switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: var(--ink-soft); user-select: none; }
+.switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.switch .track { width: 33px; height: 19px; border-radius: 20px; background: var(--line-strong); position: relative; transition: .2s; flex: none; }
+.switch .track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 15px; height: 15px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); transition: .2s; }
+.switch input:checked + .track { background: var(--accent); }
+.switch input:checked + .track::after { transform: translateX(14px); }
+.switch input:focus-visible + .track { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn {
+  appearance: none; font: inherit; font-size: 13px; font-weight: 500; border: 1px solid var(--line);
+  background: var(--bg-elev); color: var(--ink-soft); padding: 7px 13px; border-radius: 8px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px; transition: .15s; white-space: nowrap;
+}
+.btn:hover { color: var(--ink); border-color: var(--line-strong); background: var(--bg-soft); }
+.btn:active { transform: translateY(0); }
+.btn svg { width: 14px; height: 14px; }
+.btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.accent:hover { background: var(--accent-press); border-color: var(--accent-press); color: #fff; }
+html.dark .btn.accent { color: #0a0b0d; }
+html.dark .btn.accent:hover { color: #0a0b0d; }
+
+.stats-bar { display: flex; align-items: center; gap: 20px; padding: 11px 20px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--ink-soft); background: var(--bg-elev); flex-wrap: wrap; }
+.stat { display: inline-flex; align-items: center; gap: 6px; }
+.stat-num { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--ink); }
+.stat-num.ins { color: var(--add-text); }
+.stat-num.del { color: var(--del-text); }
+.stat-bar { flex: 1; height: 4px; min-width: 60px; max-width: 200px; background: var(--line); border-radius: 4px; overflow: hidden; margin-left: auto; }
+.stat-bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--del-text), var(--accent), var(--add-text)); border-radius: 4px; transition: width .4s cubic-bezier(.2,.8,.2,1); }
+
+.output { position: relative; min-height: 220px; max-height: 70vh; overflow: auto; }
+.output.empty { display: flex; align-items: center; justify-content: center; min-height: 280px; }
+.empty-state { text-align: center; color: var(--muted); padding: 40px 20px; }
+.empty-state .ic { width: 44px; height: 44px; margin: 0 auto 14px; opacity: .45; }
+.empty-state h3 { font-weight: 600; font-size: 17px; margin: 0 0 6px; color: var(--ink-soft); }
+.empty-state p { margin: 0; font-size: 14px; max-width: 320px; }
+
+/* Inline diff */
+.diff-inline { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.85; padding: 18px 22px; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
+.diff-inline ins { background: var(--add-bg); color: var(--add-text); text-decoration: none; border-radius: 3px; padding: 1px 3px; margin: 0 1px; font-weight: 500; }
+.diff-inline del { background: var(--del-bg); color: var(--del-text); text-decoration: line-through; text-decoration-color: var(--del-text); border-radius: 3px; padding: 1px 3px; margin: 0 1px; }
+
+/* Side-by-side */
+.diff-side { display: flex; align-items: flex-start; width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.diff-side .pane { flex: 0 0 auto; min-width: 50%; }
+.diff-side .pane.left { border-right: 1px solid var(--line); }
+.diff-side .row { display: flex; align-items: flex-start; line-height: 1.85; white-space: pre; }
+.diff-side .row > .gutter { flex: none; width: 52px; padding: 0 12px 0 16px; text-align: right; color: var(--muted); opacity: .5; user-select: none; font-size: 11.5px; font-variant-numeric: tabular-nums; background: var(--bg-elev); }
+.diff-side .pane.right .row > .gutter { padding-left: 12px; }
+.diff-side .row > .content { padding: 0 20px 0 6px; min-width: 0; }
+.diff-side .row.del { background: var(--del-bg); }
+.diff-side .row.del .content { color: var(--del-text); }
+.diff-side .row.del > .gutter { background: var(--del-bg); }
+.diff-side .row.ins { background: var(--add-bg); }
+.diff-side .row.ins .content { color: var(--add-text); }
+.diff-side .row.ins > .gutter { background: var(--add-bg); }
+.diff-side .row.change > .gutter { background: var(--bg-elev); }
+.diff-side .row.change .content.left { color: var(--del-text); }
+.diff-side .row.change .content.right { color: var(--add-text); }
+.diff-side .row .content del { background: var(--del-mark); color: var(--del-text); text-decoration: line-through; text-decoration-color: var(--del-text); border-radius: 2px; padding: 0 1px; }
+.diff-side .row .content ins { background: var(--add-mark); color: var(--add-text); text-decoration: none; border-radius: 2px; padding: 0 1px; }
+
+/* Unified */
+.diff-unified { font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 12px 0 20px; }
+.u-hunk { color: var(--accent); padding: 8px 22px 4px; font-weight: 500; background: var(--accent-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.u-line { display: flex; padding: 0 22px; line-height: 1.85; white-space: pre; }
+.u-line .u-mark { flex: none; width: 18px; color: var(--muted); }
+.u-line .u-text { min-width: 0; }
+.u-line.u-eq { color: var(--ink-soft); }
+.u-line.u-del { background: var(--del-bg); color: var(--del-text); }
+.u-line.u-del .u-mark { color: var(--del-text); }
+.u-line.u-ins { background: var(--add-bg); color: var(--add-text); }
+.u-line.u-ins .u-mark { color: var(--add-text); }
+
+/* identical */
+.identical { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 64px 20px; text-align: center; }
+.identical .badge { width: 52px; height: 52px; border-radius: 50%; background: var(--add-bg); color: var(--add-text); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.identical h3 { font-weight: 600; font-size: 20px; margin: 0 0 6px; color: var(--ink); }
+.identical p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+
+/* Footer */
+.site-footer { border-top: 1px solid var(--line); padding: 24px 0 36px; color: var(--muted); font-size: 13px; }
+.site-footer .wrap { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.site-footer a { color: var(--ink-soft); text-decoration: none; transition: .15s; }
+.site-footer a:hover { color: var(--accent); }
+
+/* Scrollbars */
+.output::-webkit-scrollbar, textarea::-webkit-scrollbar { width: 10px; height: 10px; }
+.output::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 10px; border: 3px solid var(--bg-elev); }
+.output::-webkit-scrollbar-thumb:hover, textarea::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(12px); animation: rise .6s cubic-bezier(.2,.8,.2,1) forwards; }
+.reveal.d1 { animation-delay: .04s; }
+.reveal.d2 { animation-delay: .12s; }
+.reveal.d3 { animation-delay: .22s; }
+.reveal.d4 { animation-delay: .32s; }
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+/* Fullscreen mode */
+body.fullscreen { overflow: hidden; }
+body.fullscreen .site-header,
+body.fullscreen .intro,
+body.fullscreen .site-footer { display: none; }
+body.fullscreen .tool { padding: 0; height: 100vh; height: 100dvh; }
+body.fullscreen .wrap { max-width: 100%; padding: 12px 16px; display: flex; flex-direction: column; height: 100vh; height: 100dvh; gap: 12px; }
+body.fullscreen .input-card { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+body.fullscreen .panes { flex: 1 1 0; min-height: 0; grid-template-rows: 1fr; }
+body.fullscreen .pane-field { min-height: 0; }
+body.fullscreen textarea { flex: 1 1 0; min-height: 0; }
+body.fullscreen .results { flex: 1.2 1 0; min-height: 0; display: flex; flex-direction: column; margin: 0; }
+body.fullscreen .output { flex: 1 1 0; max-height: none; min-height: 0; }
+
+/* Responsive */
+@media (max-width: 760px) {
+  .wrap { padding: 0 18px; }
+  .panes { grid-template-columns: 1fr; }
+  .pane-field:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
+  .swap-fab { top: auto; bottom: -17px; }
+  .intro { padding: 36px 0 24px; }
+  .toolbar { gap: 10px; }
+  .options { width: 100%; order: 3; }
+  .stats-bar { gap: 14px; }
+  .stat-bar { display: none; }
+  .diff-side { grid-template-columns: 1fr; min-width: 0; }
+  .diff-side .pane.left { border-right: 0; border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 760px) and (orientation: portrait) {
+  body.fullscreen .wrap { gap: 8px; padding: 8px 10px; }
+  body.fullscreen .results { flex: 1 1 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none; opacity: 1; transform: none; }
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand reveal d1">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--ink)"/>
+        <rect x="7.5" y="8" width="6" height="16" rx="1.6" fill="var(--accent)"/>
+        <rect x="18.5" y="8" width="6" height="16" rx="1.6" fill="none" stroke="var(--accent)" stroke-width="1.7"/>
+      </svg>
+      <div>
+        <div class="brand-name">Text Diff</div>
+        <div class="brand-sub">Text Diff</div>
+      </div>
+    </div>
+    <div class="header-actions reveal d1">
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+        <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="tool">
+  <div class="wrap">
+    <section class="intro">
+      <div class="eyebrow reveal d1">In-browser text comparison</div>
+      <h1 class="title reveal d2">Every change, <em>in plain sight.</em></h1>
+      <p class="reveal d3">Paste two passages and instantly see what was added, removed, and refined — inline, side by side, or as a unified patch. Nothing leaves your device.</p>
+    </section>
+
+    <section class="input-card reveal d3" aria-label="Text inputs">
+      <div class="panes">
+        <div class="pane-field orig">
+          <div class="pane-head">
+            <label class="pane-label" for="original"><span class="dot"></span>Original</label>
+            <span class="pane-count" id="orig-count">0 chars</span>
+          </div>
+          <textarea id="original" spellcheck="false" placeholder="Paste the original text here…"></textarea>
+        </div>
+        <div class="pane-field mod">
+          <div class="pane-head">
+            <label class="pane-label" for="modified"><span class="dot"></span>Modified</label>
+            <span class="pane-count" id="mod-count">0 chars</span>
+          </div>
+          <textarea id="modified" spellcheck="false" placeholder="Paste the modified text here…"></textarea>
+        </div>
+        <button class="swap-fab" id="swap" title="Swap texts" aria-label="Swap original and modified">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="M17 20l4-4-4-4"/><path d="M21 16H7"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section class="results reveal d4" aria-label="Diff results">
+      <div class="toolbar">
+        <div class="seg" role="tablist" aria-label="Diff view">
+          <button role="tab" data-view="inline" aria-selected="true">Inline</button>
+          <button role="tab" data-view="split" aria-selected="false">Side by side</button>
+          <button role="tab" data-view="unified" aria-selected="false">Unified</button>
+        </div>
+        <div class="spacer"></div>
+        <div class="options">
+          <label class="switch"><input type="checkbox" id="opt-case" /><span class="track"></span>Ignore case</label>
+          <label class="switch"><input type="checkbox" id="opt-trim" /><span class="track"></span>Trim trailing space</label>
+        </div>
+        <button class="btn" id="sample" title="Load sample text">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 21h14a1 1 0 0 0 1-1V8l-5-5H6a1 1 0 0 0-1 1z"/></svg>
+          Sample
+        </button>
+        <button class="btn" id="clear" title="Clear both inputs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6"/></svg>
+          Clear
+        </button>
+        <button class="btn accent" id="copy-img" title="Copy diff as image" aria-label="Copy diff as image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          Copy As Image
+        </button>
+        <button class="btn" id="download-img" title="Download diff as image" aria-label="Download diff as image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+          Download As Image
+        </button>
+        <button class="btn" id="fullscreen" title="Fullscreen (Esc to exit)" aria-label="Toggle fullscreen">
+          <svg id="icon-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+          <span class="fs-label">Fullscreen</span>
+        </button>
+      </div>
+      <div class="stats-bar" id="stats" aria-live="polite"></div>
+      <div class="output" id="output"></div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>Text Diff · A diff tool that runs entirely in your browser.</div>
+    <div>Powered by <a href="https://github.com/google/diff-match-patch" rel="noopener" target="_blank">diff-match-patch</a></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  if (typeof diff_match_patch === "undefined") {
+    document.getElementById("output").innerHTML =
+      '<div class="empty-state"><h3>Library failed to load</h3><p>The diff-match-patch library could not be reached. Check your connection and refresh.</p></div>';
+    return;
+  }
+
+  var dmp = new diff_match_patch();
+  var DIFF_DELETE = -1, DIFF_INSERT = 1, DIFF_EQUAL = 0;
+  var MAX_CHARS = 400000;
+
+  var els = {
+    original: document.getElementById("original"),
+    modified: document.getElementById("modified"),
+    output: document.getElementById("output"),
+    stats: document.getElementById("stats"),
+    tabs: document.querySelectorAll("[data-view]"),
+    optCase: document.getElementById("opt-case"),
+    optTrim: document.getElementById("opt-trim"),
+    swap: document.getElementById("swap"),
+    clear: document.getElementById("clear"),
+    sample: document.getElementById("sample"),
+    copyImg: document.getElementById("copy-img"),
+    downloadImg: document.getElementById("download-img"),
+    fullscreen: document.getElementById("fullscreen"),
+    themeToggle: document.getElementById("theme-toggle"),
+    origCount: document.getElementById("orig-count"),
+    modCount: document.getElementById("mod-count")
+  };
+
+  var state = { view: "inline", ignoreCase: false, trimWS: false };
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function process(text) {
+    var t = text;
+    if (state.ignoreCase) t = t.toLowerCase();
+    if (state.trimWS) t = t.replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); }).join("\n");
+    return t;
+  }
+
+  function diffLines(t1, t2) {
+    var a = dmp.diff_linesToChars_(t1, t2);
+    var d = dmp.diff_main(a.chars1, a.chars2, false);
+    dmp.diff_charsToLines_(d, a.lineArray);
+    dmp.diff_cleanupSemantic(d);
+    return d;
+  }
+
+  function diffWords(t1, t2) {
+    var re = /\s+|\S+/g;
+    var toks1 = t1.match(re) || [];
+    var toks2 = t2.match(re) || [];
+    var map = Object.create(null);
+    var arr = [];
+    function toChars(toks) {
+      var s = "";
+      for (var i = 0; i < toks.length; i++) {
+        var tk = toks[i];
+        if (!(tk in map)) {
+          if (arr.length > 54000) return null;
+          map[tk] = String.fromCharCode(arr.length + 1);
+          arr.push(tk);
+        }
+        s += map[tk];
+      }
+      return s;
+    }
+    var c1 = toChars(toks1), c2 = toChars(toks2);
+    if (c1 === null || c2 === null) {
+      var fb = dmp.diff_main(t1, t2, false);
+      dmp.diff_cleanupSemantic(fb);
+      return fb;
+    }
+    var d = dmp.diff_main(c1, c2, false);
+    dmp.diff_cleanupSemantic(d);
+    var out = [];
+    for (var i = 0; i < d.length; i++) {
+      var op = d[i][0], text = d[i][1], s = "";
+      for (var j = 0; j < text.length; j++) s += arr[text.charCodeAt(j) - 1];
+      out.push([op, s]);
+    }
+    return out;
+  }
+
+  function compute() {
+    var raw1 = els.original.value;
+    var raw2 = els.modified.value;
+    if (raw1.length > MAX_CHARS || raw2.length > MAX_CHARS) {
+      return { error: "Input is very large (" + Math.max(raw1.length, raw2.length).toLocaleString() + " chars). Trimming may slow down." };
+    }
+    var t1 = process(raw1);
+    var t2 = process(raw2);
+    if (!t1 && !t2) return { empty: true };
+    var lineDiffs = diffLines(t1, t2);
+    var wordDiffs = diffWords(t1, t2);
+    var charDiffs = dmp.diff_main(t1, t2, false);
+    dmp.diff_cleanupSemantic(charDiffs);
+    var lev = dmp.diff_levenshtein(charDiffs);
+    var ins = 0, del = 0;
+    for (var i = 0; i < charDiffs.length; i++) {
+      if (charDiffs[i][0] === DIFF_INSERT) ins += charDiffs[i][1].length;
+      else if (charDiffs[i][0] === DIFF_DELETE) del += charDiffs[i][1].length;
+    }
+    var maxLen = Math.max(t1.length, t2.length);
+    var similarity = maxLen ? Math.max(0, (1 - lev / maxLen) * 100) : 100;
+    return { lineDiffs: lineDiffs, wordDiffs: wordDiffs, ins: ins, del: del, similarity: similarity, identical: ins === 0 && del === 0 };
+  }
+
+  function renderInline(diffs) {
+    var html = "";
+    for (var i = 0; i < diffs.length; i++) {
+      var op = diffs[i][0], t = esc(diffs[i][1]);
+      if (op === DIFF_EQUAL) html += "<span>" + t + "</span>";
+      else if (op === DIFF_DELETE) html += "<del>" + t + "</del>";
+      else html += "<ins>" + t + "</ins>";
+    }
+    return '<div class="diff-inline">' + html + "</div>";
+  }
+
+  function buildSide(diffs) {
+    var rows = [];
+    var pL = "", pR = "";
+    function flush() {
+      if (pL === pR) {
+        var parts = pL.split("\n");
+        for (var i = 0; i < parts.length - 1; i++) rows.push({ left: parts[i], right: parts[i], type: "equal" });
+        pL = pR = parts[parts.length - 1];
+      } else {
+        var dl = pL.split("\n"), rl = pR.split("\n");
+        var n = Math.max(dl.length, rl.length);
+        for (var j = 0; j < n - 1; j++) {
+          var a = dl[j] || "", b = rl[j] || "";
+          rows.push({ left: a, right: b, type: a && b ? "change" : a ? "del" : "ins" });
+        }
+        pL = dl[n - 1] || "";
+        pR = rl[n - 1] || "";
+      }
+    }
+    var i = 0;
+    while (i < diffs.length) {
+      var op = diffs[i][0], text = diffs[i][1];
+      if (op === DIFF_EQUAL) { pL += text; pR += text; flush(); i++; }
+      else {
+        var delT = "", insT = "";
+        while (i < diffs.length && diffs[i][0] !== DIFF_EQUAL) {
+          if (diffs[i][0] === DIFF_DELETE) delT += diffs[i][1];
+          else insT += diffs[i][1];
+          i++;
+        }
+        pL += delT; pR += insT; flush();
+      }
+    }
+    if (pL !== "" || pR !== "" || rows.length === 0) {
+      rows.push({ left: pL, right: pR, type: pL === pR ? "equal" : pL && pR ? "change" : pL ? "del" : "ins" });
+    }
+    var o = 1, n = 1;
+    for (var k = 0; k < rows.length; k++) {
+      var r = rows[k];
+      if (r.type === "equal") { r.lo = o; r.ln = n; o++; n++; }
+      else if (r.type === "del") { r.lo = o; r.ln = ""; o++; }
+      else if (r.type === "ins") { r.lo = ""; r.ln = n; n++; }
+      else { r.lo = o; r.ln = n; o++; n++; }
+    }
+    return rows;
+  }
+
+  function withinLine(left, right, side) {
+    var d = dmp.diff_main(left, right, false);
+    dmp.diff_cleanupSemantic(d);
+    var html = "";
+    for (var i = 0; i < d.length; i++) {
+      var op = d[i][0], t = esc(d[i][1]);
+      if (op === DIFF_EQUAL) html += "<span>" + t + "</span>";
+      else if (op === DIFF_DELETE) { if (side === "left") html += "<del>" + t + "</del>"; }
+      else { if (side === "right") html += "<ins>" + t + "</ins>"; }
+    }
+    return html;
+  }
+
+  function renderSide(diffs) {
+    var rows = buildSide(diffs);
+    var leftHtml = "", rightHtml = "";
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      var lc = r.type === "change" ? withinLine(r.left, r.right, "left") : esc(r.left);
+      var rc = r.type === "change" ? withinLine(r.left, r.right, "right") : esc(r.right);
+      var cls = r.type;
+      leftHtml += '<div class="row ' + cls + '"><span class="gutter">' + (r.lo || "") + '</span><span class="content left">' + (lc || " ") + "</span></div>";
+      rightHtml += '<div class="row ' + cls + '"><span class="gutter">' + (r.ln || "") + '</span><span class="content right">' + (rc || " ") + "</span></div>";
+    }
+    return '<div class="diff-side"><div class="pane left">' + leftHtml + '</div><div class="pane right">' + rightHtml + "</div></div>";
+  }
+
+  function extractLines(diffs) {
+    var lines = [];
+    var o = 1, n = 1;
+    for (var i = 0; i < diffs.length; i++) {
+      var op = diffs[i][0], segs = diffs[i][1].split("\n");
+      for (var j = 0; j < segs.length; j++) {
+        var seg = segs[j];
+        var isLast = j === segs.length - 1;
+        if (op === DIFF_EQUAL) {
+          if (!isLast) { lines.push({ t: "eq", text: seg, o: o, n: n }); o++; n++; }
+          else if (seg !== "") { lines.push({ t: "eq", text: seg, o: o, n: n }); }
+        } else if (op === DIFF_DELETE) {
+          if (!isLast) { lines.push({ t: "del", text: seg, o: o, n: n }); o++; }
+          else if (seg !== "") { lines.push({ t: "del", text: seg, o: o, n: n }); }
+        } else {
+          if (!isLast) { lines.push({ t: "ins", text: seg, o: o, n: n }); n++; }
+          else if (seg !== "") { lines.push({ t: "ins", text: seg, o: o, n: n }); }
+        }
+      }
+    }
+    return lines;
+  }
+
+  function renderUnified(diffs) {
+    var lines = extractLines(diffs);
+    var changeIdx = [];
+    for (var i = 0; i < lines.length; i++) if (lines[i].t !== "eq") changeIdx.push(i);
+    if (changeIdx.length === 0) return null;
+    var ctx = 3;
+    var intervals = changeIdx.map(function (idx) {
+      return [Math.max(0, idx - ctx), Math.min(lines.length - 1, idx + ctx)];
+    });
+    var merged = [intervals[0].slice()];
+    for (var k = 1; k < intervals.length; k++) {
+      var last = merged[merged.length - 1];
+      if (intervals[k][0] <= last[1] + 1) last[1] = Math.max(last[1], intervals[k][1]);
+      else merged.push(intervals[k].slice());
+    }
+    var html = "";
+    for (var m = 0; m < merged.length; m++) {
+      var s = merged[m][0], e = merged[m][1];
+      var hunk = lines.slice(s, e + 1);
+      var oldLen = 0, newLen = 0;
+      for (var h = 0; h < hunk.length; h++) {
+        if (hunk[h].t === "eq") { oldLen++; newLen++; }
+        else if (hunk[h].t === "del") oldLen++;
+        else newLen++;
+      }
+      var first = hunk[0];
+      var oldStart = oldLen === 0 ? Math.max(0, first.o - 1) : first.o;
+      var newStart = newLen === 0 ? Math.max(0, first.n - 1) : first.n;
+      var oldStr = oldLen === 1 ? String(oldStart) : oldStart + "," + oldLen;
+      var newStr = newLen === 1 ? String(newStart) : newStart + "," + newLen;
+      html += '<div class="u-hunk">@@ -' + oldStr + " +" + newStr + " @@</div>";
+      for (var p = 0; p < hunk.length; p++) {
+        var l = hunk[p];
+        var cls = l.t === "del" ? "u-del" : l.t === "ins" ? "u-ins" : "u-eq";
+        var mark = l.t === "del" ? "-" : l.t === "ins" ? "+" : " ";
+        html += '<div class="u-line ' + cls + '"><span class="u-mark">' + mark + '</span><span class="u-text">' + (esc(l.text) || " ") + "</span></div>";
+      }
+    }
+    return '<div class="diff-unified">' + html + "</div>";
+  }
+
+  function emptyState() {
+    return '<div class="empty-state">' +
+      '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10M7 12h6"/><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M14 16h4"/></svg>' +
+      "<h3>Nothing to compare yet</h3><p>Enter text in both panels to see the difference appear here in real time.</p></div>";
+  }
+
+  function identicalState(similarity) {
+    return '<div class="identical">' +
+      '<div class="badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>' +
+      "<h3>Texts are identical</h3><p>" + similarity.toFixed(1) + "% match · no differences found.</p></div>";
+  }
+
+  function statsHtml(r) {
+    var w = Math.round(r.similarity);
+    return '<span class="stat"><span class="stat-num ins">+' + r.ins + '</span> added</span>' +
+      '<span class="stat"><span class="stat-num del">&minus;' + r.del + '</span> removed</span>' +
+      '<span class="stat"><span class="stat-num">' + r.similarity.toFixed(1) + '%</span> similar</span>' +
+      '<span class="stat-bar"><span style="width:' + w + '%"></span></span>';
+  }
+
+  function render(result) {
+    if (result.empty) {
+      els.output.className = "output empty";
+      els.output.innerHTML = emptyState();
+      els.stats.innerHTML = "";
+      return;
+    }
+    els.output.className = "output";
+    if (result.identical) {
+      els.output.innerHTML = identicalState(result.similarity);
+      els.stats.innerHTML = statsHtml(result);
+      return;
+    }
+    var html;
+    if (state.view === "inline") html = renderInline(result.wordDiffs);
+    else if (state.view === "split") html = renderSide(result.lineDiffs);
+    else html = renderUnified(result.lineDiffs) || identicalState(result.similarity);
+    els.output.innerHTML = html;
+    els.stats.innerHTML = statsHtml(result);
+  }
+
+  function updateCounts() {
+    els.origCount.textContent = els.original.value.length.toLocaleString() + " chars";
+    els.modCount.textContent = els.modified.value.length.toLocaleString() + " chars";
+  }
+
+  var timer = null;
+  function schedule() {
+    clearTimeout(timer);
+    timer = setTimeout(update, 180);
+  }
+  function update() {
+    updateCounts();
+    render(compute());
+  }
+
+  function setView(v) {
+    state.view = v;
+    for (var i = 0; i < els.tabs.length; i++) {
+      els.tabs[i].setAttribute("aria-selected", els.tabs[i].getAttribute("data-view") === v ? "true" : "false");
+    }
+    update();
+  }
+
+  function flashCopy(btn, msg) {
+    var orig = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' + msg;
+    setTimeout(function () { btn.innerHTML = orig; }, 1200);
+  }
+
+  // --- Image export ---
+  // Build a self-contained SVG snapshot of the diff output, rasterize it to a
+  // PNG via <canvas>, then either copy to clipboard or trigger a download.
+  function escapeXml(s) {
+    return String(s).replace(/[<>&"']/g, function (c) {
+      return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&apos;" }[c];
+    });
+  }
+  function escapeText(s) { return escapeXml(s).replace(/\t/g, "    "); }
+
+  function buildDiffSvg() {
+    var dark = document.documentElement.classList.contains("dark");
+    var bg = dark ? "#0a0b0d" : "#ffffff";
+    var cardBg = dark ? "#131419" : "#ffffff";
+    var ink = dark ? "#f4f5f7" : "#0c0e14";
+    var inkSoft = dark ? "#b4bac6" : "#4b5364";
+    var muted = dark ? "#71778a" : "#8a93a6";
+    var line = dark ? "#21232b" : "#eceef3";
+    var addBg = dark ? "#0f2818" : "#ecfdf3";
+    var addText = dark ? "#4ade80" : "#07935a";
+    var addMark = dark ? "#1e4a2e" : "#abefc6";
+    var delBg = dark ? "#2a1416" : "#fef0f2";
+    var delText = dark ? "#f87171" : "#d23442";
+    var delMark = dark ? "#4a2226" : "#ffc6ca";
+    var accent = dark ? "#5b8cff" : "#2f6bff";
+
+    var mono = "'JetBrains Mono','Menlo','Consolas',monospace";
+    var sans = "'DM Sans',system-ui,sans-serif";
+    var FS = 13, LH = 21, PAD = 22, GW = 52;
+    var W = 880;
+
+    var view = state.view;
+    var rows = [];
+    var headerLabel = view === "inline" ? "Inline diff" : view === "split" ? "Side-by-side diff" : "Unified diff";
+
+    if (view === "inline" || view === "unified") {
+      var container = view === "inline" ? els.output.querySelector(".diff-inline") : els.output.querySelector(".diff-unified");
+      if (!container) return null;
+      var lineEls;
+      if (view === "inline") {
+        // inline: walk child nodes, grouping consecutive del/ins into single rows
+        var raw = [];
+        var buf = { type: "eq", segs: [] };
+        function flushBuf() { if (buf.segs.length) raw.push(buf); buf = { type: "eq", segs: [] }; }
+        container.childNodes.forEach(function (n) {
+          if (n.nodeType === 3) { buf.segs.push({ t: "eq", s: n.textContent }); }
+          else if (n.nodeName === "INS") { if (buf.type !== "ins") { flushBuf(); buf.type = "ins"; } buf.segs.push({ t: "ins", s: n.textContent }); }
+          else if (n.nodeName === "DEL") { if (buf.type !== "del") { flushBuf(); buf.type = "del"; } buf.segs.push({ t: "del", s: n.textContent }); }
+          else if (n.nodeName === "SPAN") { if (buf.type !== "eq") { flushBuf(); buf.type = "eq"; } buf.segs.push({ t: "eq", s: n.textContent }); }
+        });
+        flushBuf();
+        raw.forEach(function (r) {
+          var parts = r.segs[0].s.split("\n");
+          for (var i = 0; i < parts.length; i++) {
+            if (i > 0) rows.push({ type: r.type, segs: [] });
+            if (parts[i] !== "") rows.push({ type: r.type, segs: [{ t: r.type, s: parts[i] }] });
+          }
+        });
+        lineEls = rows;
+      } else {
+        // unified: gather hunk headers + lines
+        lineEls = [];
+        container.querySelectorAll(".u-hunk, .u-line").forEach(function (el) {
+          if (el.classList.contains("u-hunk")) lineEls.push({ type: "hunk", text: el.textContent });
+          else if (el.classList.contains("u-del")) lineEls.push({ type: "del", text: el.querySelector(".u-text").textContent });
+          else if (el.classList.contains("u-ins")) lineEls.push({ type: "ins", text: el.querySelector(".u-text").textContent });
+          else lineEls.push({ type: "eq", text: el.querySelector(".u-text").textContent });
+        });
+        rows = lineEls;
+      }
+    } else {
+      // split: pair left/right rows
+      var leftRows = els.output.querySelectorAll(".diff-side .pane.left .row");
+      var rightRows = els.output.querySelectorAll(".diff-side .pane.right .row");
+      var n = Math.max(leftRows.length, rightRows.length);
+      for (var i = 0; i < n; i++) {
+        var lr = leftRows[i], rr = rightRows[i];
+        rows.push({
+          type: lr ? lr.className.match(/(del|ins|change|equal)/)[1] : "ins",
+          left: lr ? lr.querySelector(".content").textContent : "",
+          right: rr ? rr.querySelector(".content").textContent : "",
+          lnum: lr ? lr.querySelector(".gutter").textContent : "",
+          rnum: rr ? rr.querySelector(".gutter").textContent : ""
+        });
+      }
+    }
+
+    var inner = "";
+    var y = 0;
+
+    // header band
+    inner += '<rect x="0" y="0" width="' + W + '" height="44" fill="' + accent + '"/>';
+    inner += '<text x="22" y="28" font-family="' + sans + '" font-size="14" font-weight="600" fill="#ffffff">' + escapeText(headerLabel) + "</text>";
+    var statsText = (els.stats.innerText || "").replace(/\s+/g, " ").trim();
+    if (statsText) inner += '<text x="' + (W - 22) + '" y="28" font-family="' + sans + '" font-size="12" fill="#ffffff" opacity="0.85" text-anchor="end">' + escapeText(statsText) + "</text>";
+    y = 44;
+
+    function rowBg(t) { return t === "del" ? delBg : t === "ins" ? addBg : t === "change" ? "transparent" : "transparent"; }
+    function rowFg(t) { return t === "del" ? delText : t === "ins" ? addText : inkSoft; }
+
+    rows.forEach(function (r) {
+      var ry = y;
+      if (view === "unified" && r.type === "hunk") {
+        inner += '<rect x="0" y="' + ry + '" width="' + W + '" height="' + LH + '" fill="' + accent + '" opacity="0.1"/>';
+        inner += '<text x="' + PAD + '" y="' + (ry + 15) + '" font-family="' + mono + '" font-size="' + FS + '" font-weight="600" fill="' + accent + '">' + escapeText(r.text) + "</text>";
+        y += LH;
+        return;
+      }
+      var bg = rowBg(r.type);
+      if (bg !== "transparent") inner += '<rect x="0" y="' + ry + '" width="' + W + '" height="' + LH + '" fill="' + bg + '"/>';
+      if (view === "split") {
+        var halfW = (W - GW) / 2;
+        // change rows: tint each side first (under the text)
+        if (r.type === "change") {
+          inner += '<rect x="0" y="' + ry + '" width="' + (GW + halfW) + '" height="' + LH + '" fill="' + delBg + '"/>';
+          inner += '<rect x="' + (GW + halfW) + '" y="' + ry + '" width="' + halfW + '" height="' + LH + '" fill="' + addBg + '"/>';
+        }
+        // gutter numbers
+        inner += '<text x="' + (GW - 12) + '" y="' + (ry + 15) + '" font-family="' + mono + '" font-size="11" fill="' + muted + '" text-anchor="end">' + escapeText(r.lnum) + "</text>";
+        inner += '<text x="' + (GW + halfW - 12) + '" y="' + (ry + 15) + '" font-family="' + mono + '" font-size="11" fill="' + muted + '" text-anchor="end">' + escapeText(r.rnum) + "</text>";
+        // divider
+        inner += '<line x1="' + (GW + halfW) + '" y1="' + ry + '" x2="' + (GW + halfW) + '" y2="' + (ry + LH) + '" stroke="' + line + '"/>';
+        // left content
+        var lfg = r.type === "change" || r.type === "del" ? delText : r.type === "ins" ? addText : inkSoft;
+        inner += '<text x="' + (GW + 12) + '" y="' + (ry + 15) + '" font-family="' + mono + '" font-size="' + FS + '" fill="' + lfg + '">' + escapeText(r.left || " ") + "</text>";
+        // right content
+        var rfg = r.type === "change" || r.type === "ins" ? addText : r.type === "del" ? delText : inkSoft;
+        inner += '<text x="' + (GW + halfW + 12) + '" y="' + (ry + 15) + '" font-family="' + mono + '" font-size="' + FS + '" fill="' + rfg + '">' + escapeText(r.right || " ") + "</text>";
+      } else if (view === "unified") {
+        var mark = r.type === "del" ? "-" : r.type === "ins" ? "+" : " ";
+        inner += '<text x="' + PAD + '" y="' + (ry + 15) + '" font-family="' + mono + '" font-size="' + FS + '" fill="' + rowFg(r.type) + '"><tspan opacity="0.5">' + mark + "</tspan> " + escapeText(r.text || " ") + "</text>";
+      } else {
+        // inline: render segments with mark backgrounds
+        var xOff = PAD;
+        r.segs.forEach(function (seg) {
+          var segBg = seg.t === "del" ? delMark : seg.t === "ins" ? addMark : "transparent";
+          var segFg = seg.t === "del" ? delText : seg.t === "ins" ? addText : ink;
+          var segW = seg.s.length * 7.8;
+          if (segBg !== "transparent") inner += '<rect x="' + (xOff - 2) + '" y="' + (ry + 3) + '" width="' + (segW + 4) + '" height="' + (LH - 6) + '" rx="2" fill="' + segBg + '" opacity="0.6"/>';
+          xOff += segW;
+        });
+        var segStr = r.segs.map(function (seg) {
+          var segFg = seg.t === "del" ? delText : seg.t === "ins" ? addText : ink;
+          return '<tspan fill="' + segFg + '">' + escapeText(seg.s || " ") + "</tspan>";
+        }).join("");
+        inner += '<text x="' + PAD + '" y="' + (ry + 15) + '" font-family="' + mono + '" font-size="' + FS + '">' + segStr + "</text>";
+      }
+      y += LH;
+    });
+
+    var totalH = y + 24;
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + totalH + '" viewBox="0 0 ' + W + " " + totalH + '">';
+    svg += "<defs><style>text{white-space:pre}</style></defs>";
+    svg += '<rect width="' + W + '" height="' + totalH + '" fill="' + bg + '"/>';
+    svg += '<rect x="0" y="0" width="' + W + '" height="' + totalH + '" fill="' + cardBg + '"/>';
+    svg += inner;
+    svg += "</svg>";
+    return { svg: svg, width: W, height: totalH };
+  }
+
+  // Rasterize the SVG to a PNG blob, then invoke onPng(blob).
+  function withPng(onPng, onErr) {
+    var data = buildDiffSvg();
+    if (!data) { onErr(); return; }
+    var blob = new Blob([data.svg], { type: "image/svg+xml;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var img = new Image();
+    img.onload = function () {
+      var scale = 2;
+      var canvas = document.createElement("canvas");
+      canvas.width = data.width * scale;
+      canvas.height = data.height * scale;
+      var ctx = canvas.getContext("2d");
+      ctx.scale(scale, scale);
+      ctx.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(function (pngBlob) {
+        if (pngBlob) onPng(pngBlob);
+        else onErr();
+      }, "image/png");
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); onErr(); };
+    img.src = url;
+  }
+
+  function copyDiffAsImage() {
+    withPng(
+      function (pngBlob) {
+        try {
+          if (navigator.clipboard && window.ClipboardItem) {
+            var item = new ClipboardItem({ "image/png": pngBlob });
+            navigator.clipboard.write([item]).then(
+              function () { flashCopy(els.copyImg, "Copied"); },
+              function () { flashCopy(els.copyImg, "Failed"); }
+            );
+          } else {
+            flashCopy(els.copyImg, "Unsupported");
+          }
+        } catch (e) {
+          flashCopy(els.copyImg, "Failed");
+        }
+      },
+      function () { flashCopy(els.copyImg, "Failed"); }
+    );
+  }
+
+  function downloadDiffAsImage() {
+    withPng(
+      function (pngBlob) {
+        downloadPng(pngBlob);
+        flashCopy(els.downloadImg, "Downloaded");
+      },
+      function () { flashCopy(els.downloadImg, "Failed"); }
+    );
+  }
+
+  function downloadPng(blob) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "text-diff.png";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  function setTheme(dark) {
+    document.documentElement.classList.toggle("dark", dark);
+    try { localStorage.setItem("textdiff-theme", dark ? "dark" : "light"); } catch (e) {}
+    var icon = document.getElementById("icon-sun");
+    if (dark) {
+      icon.innerHTML = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+    } else {
+      icon.innerHTML = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+    }
+  }
+  function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem("textdiff-theme"); } catch (e) {}
+    var dark = saved ? saved === "dark" : window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setTheme(dark);
+  }
+
+  els.original.addEventListener("input", schedule);
+  els.modified.addEventListener("input", schedule);
+  for (var i = 0; i < els.tabs.length; i++) {
+    (function (tab) { tab.addEventListener("click", function () { setView(tab.getAttribute("data-view")); }); })(els.tabs[i]);
+  }
+  els.optCase.addEventListener("change", function () { state.ignoreCase = els.optCase.checked; update(); });
+  els.optTrim.addEventListener("change", function () { state.trimWS = els.optTrim.checked; update(); });
+  els.swap.addEventListener("click", function () {
+    var a = els.original.value;
+    els.original.value = els.modified.value;
+    els.modified.value = a;
+    update();
+  });
+  els.clear.addEventListener("click", function () {
+    els.original.value = ""; els.modified.value = "";
+    update();
+    els.original.focus();
+  });
+  els.copyImg.addEventListener("click", copyDiffAsImage);
+  els.downloadImg.addEventListener("click", downloadDiffAsImage);
+  els.themeToggle.addEventListener("click", function () {
+    setTheme(!document.documentElement.classList.contains("dark"));
+  });
+
+  var ICON_EXPAND = '<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>';
+  var ICON_COLLAPSE = '<path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/>';
+  function setFullscreen(on) {
+    document.body.classList.toggle("fullscreen", on);
+    var svg = els.fullscreen.querySelector("svg");
+    svg.innerHTML = on ? ICON_COLLAPSE : ICON_EXPAND;
+    var label = els.fullscreen.querySelector(".fs-label");
+    if (label) label.textContent = on ? "Exit" : "Fullscreen";
+    els.fullscreen.setAttribute("aria-pressed", on ? "true" : "false");
+    els.fullscreen.title = on ? "Exit fullscreen (Esc)" : "Fullscreen (Esc to exit)";
+    try { localStorage.setItem("textdiff-fullscreen", on ? "1" : "0"); } catch (e) {}
+  }
+  els.fullscreen.addEventListener("click", function () {
+    setFullscreen(!document.body.classList.contains("fullscreen"));
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && document.body.classList.contains("fullscreen")) {
+      setFullscreen(false);
+    }
+  });
+
+  var SAMPLE = {
+    original: "The quick brown fox jumps over the lazy dog.\n" +
+      "Pack my box with five dozen liquor jugs.\n" +
+      "Sphinx of black quartz, judge my vow.\n" +
+      "How vexingly quick daft zebras jump!",
+    modified: "The quick brown fox leaps over the lazy dog.\n" +
+      "Pack my box with five dozen liquor jugs.\n" +
+      "Sphinx of black quartz, judge my vow.\n" +
+      "How vexingly quick daft zebras jump!\n" +
+      "The five boxing wizards jump quickly."
+  };
+  els.sample.addEventListener("click", function () {
+    els.original.value = SAMPLE.original;
+    els.modified.value = SAMPLE.modified;
+    update();
+  });
+
+  initTheme();
+  try { if (localStorage.getItem("textdiff-fullscreen") === "1") setFullscreen(true); } catch (e) {}
+  update();
+})();
+</script>
 </body>
 </html>
