@@ -11,13 +11,14 @@
 <meta name="robots" content="index, follow" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#0a0b0d" media="(prefers-color-scheme: dark)" />
-<link rel="canonical" href="https://verso.diff/" />
+<link rel="canonical" href="https://text-diff.commontool.online/" />
 
 <meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
 <meta property="og:title" content="Text Diff - Common Tool" />
 <meta property="og:description" content="Compare two texts instantly with inline, side-by-side, and unified diff views. Runs entirely in your browser." />
 <meta property="og:image" content="og-image.svg" />
-<meta property="og:url" content="https://verso.diff/" />
+<meta property="og:url" content="https://text-diff.commontool.online/" />
 <meta property="og:site_name" content="Text Diff - Common Tool" />
 
 <meta name="twitter:card" content="summary_large_image" />
@@ -26,6 +27,7 @@
 <meta name="twitter:image" content="og-image.svg" />
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0b0d'/%3E%3Crect x='7' y='8' width='6.5' height='16' rx='1.6' fill='%234f7cf5'/%3E%3Crect x='18.5' y='8' width='6.5' height='16' rx='1.6' fill='none' stroke='%234f7cf5' stroke-width='1.6'/%3E%3C/svg%3E" />
+<link rel="manifest" href="site.webmanifest" />
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0b0d'/%3E%3Crect x='7' y='8' width='6.5' height='16' rx='1.6' fill='%234f7cf5'/%3E%3Crect x='18.5' y='8' width='6.5' height='16' rx='1.6' fill='none' stroke='%234f7cf5' stroke-width='1.6'/%3E%3C/svg%3E" />
 <link rel="mask-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='7' y='8' width='6.5' height='16' rx='1.6' fill='black'/%3E%3Crect x='18.5' y='8' width='6.5' height='16' rx='1.6' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E" color="#0a0b0d" />
 
@@ -41,7 +43,19 @@
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "url": "https://verso.diff/"
+  "url": "https://text-diff.commontool.online/",
+  "featureList": [
+    "Inline diff view",
+    "Side-by-side diff view",
+    "Unified diff view",
+    "Ignore case option",
+    "Trim trailing whitespace option",
+    "Swap texts",
+    "Copy or download diff as PNG image",
+    "Fullscreen mode",
+    "Live similarity statistics (added/removed chars, similarity %)",
+    "Dark/light theme"
+  ]
 }
 </script>
 
@@ -1051,5 +1065,10 @@ body.fullscreen .output { flex: 1 1 0; max-height: none; min-height: 0; }
   update();
 })();
 </script>
+
+<noscript>
+  <h1>Text Diff - Common Tool</h1>
+  <p>Compare two texts instantly with inline, side-by-side, and unified diff views. This tool runs entirely in your browser. Please enable JavaScript to use it.</p>
+</noscript>
 </body>
 </html>

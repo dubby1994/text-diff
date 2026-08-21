@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://textcompare.top/sitemap.xml
+Sitemap: https://text-diff.commontool.online/sitemap.xml

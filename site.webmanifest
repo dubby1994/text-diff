@@ -1,11 +1,11 @@
 {
-    "name": "TextDiff – Compare Text, JSON, Excel & Images",
+    "name": "Text Diff – Compare Text, JSON, Excel & Images",
     "short_name": "TextDiff",
-    "description": "Free online text, JSON, Excel and image comparison tool. Compare differences instantly. 100% client-side, no upload.",
+    "description": "Free online text comparison tool. Compare two texts instantly with inline, side-by-side, and unified diff views. 100% client-side, no upload.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#f8f9fc",
-    "theme_color": "#1a1a2e",
+    "background_color": "#0a0b0d",
+    "theme_color": "#0a0b0d",
     "lang": "en",
     "icons": [
         {
@@ -13,11 +13,6 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
-        },
-        {
-            "src": "/favicon.png",
-            "sizes": "32x32",
-            "type": "image/png"
         }
     ]
 }
